@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 
+const appId = process.env.REACT_APP_X_API_ID;
+const appKey = process.env.REACT_APP_X_API_KEY;
+
 const AuthModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -76,14 +79,13 @@ if (!/^\d+$/.test(formData.age)) {
 
 
 // ----------------------
-
     try {
       const response = await fetch("http://127.0.0.1:8000/api/visitor/entries/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-API-KEY": "TJS-API-KEYMAINAUTH",
-          "X-API-ID": "TJS-001"
+          "X-API-KEY": appKey,
+          "X-API-ID": appId,
         },
         body: JSON.stringify(formData)
       });
