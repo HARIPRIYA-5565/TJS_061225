@@ -1,300 +1,237 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SectionId } from '../constants';
-import { Mail, Phone, MapPin, Calendar } from 'lucide-react';
+import { Mail, Phone, MapPin } from 'lucide-react';
 
 export const Contact = () => {
+  const cardRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== 'undefined' ? window.innerWidth >= 768 : false
+  );
+
+  // slide / fade in on scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // update isDesktop on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window === 'undefined') return;
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // tilt on hover
+  const handleMouseMove = useCallback((e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const midX = rect.width / 2;
+    const midY = rect.height / 2;
+    const max = 6;
+    const rotateY = ((x - midX) / midX) * -max;
+    const rotateX = ((y - midY) / midY) * max;
+    setTilt({ x: rotateX, y: rotateY });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ x: 0, y: 0 });
+  }, []);
+
+  const forestGreen = "#628141";
+
   const styles = {
     section: {
-      padding: '6rem 0',
-      backgroundColor: '#ffffff',
+      padding: '5rem 0',
+      position: 'relative',
+      backgroundImage: `url('/Images/imageFourtyThree.jpg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    },
+    overlay: {
+      position: 'absolute',
+      inset: 0,
+      backgroundColor: 'rgba(255,255,255,0.55)', // translucent layer
+      backdropFilter: 'blur(4px)',
+      zIndex: 1,
     },
     container: {
       width: '90%',
-      maxWidth: '1200px',
+      maxWidth: '960px',
       margin: '0 auto',
       padding: '0 1rem',
-    },
-    flex: {
-      display: 'flex',
-      flexDirection: 'column',
-      borderRadius: '1.5rem',
-      overflow: 'hidden',
-      boxShadow: '0 25px 50px rgba(0,0,0,0.1)',
-    },
-    flexLg: {
-      flexDirection: 'row',
-    },
-    leftPanel: {
-      backgroundColor: '#064e3b', // jungle-900
-      color: 'white',
-      padding: '3rem',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '100%',
-    },
-    leftPanelLg: {
-      width: '40%',
-    },
-    rightPanel: {
-      backgroundColor: 'white',
-      padding: '3rem',
-      width: '100%',
-    },
-    rightPanelLg: {
-      width: '60%',
-    },
-    title: {
-      fontFamily: 'serif',
-      fontSize: '2rem',
-      fontWeight: 'bold',
-      marginBottom: '1.5rem',
-    },
-    paragraph: {
-      color: '#a7f3d0', // jungle-200
-      marginBottom: '3rem',
-    },
-    infoItem: {
-      display: 'flex',
-      gap: '1rem',
-      marginBottom: '1.5rem',
-      alignItems: 'flex-start',
-    },
-    infoText: {
-      fontWeight: '600',
-      marginBottom: '0.25rem',
-    },
-    infoSubtext: {
-      color: '#e0f2f1', // jungle-100
-      margin: 0,
-      lineHeight: '1.25rem',
-    },
-    mapWrapper: {
-      width: '100%',
-      height: '12rem',
-      backgroundColor: '#065f46', // jungle-800
-      borderRadius: '1rem',
-      overflow: 'hidden',
       position: 'relative',
+      zIndex: 5,
     },
-    mapImage: {
+    card: {
+      background: 'linear-gradient(135deg, #E7F3E1, #C9DDBE)', // GREEN GRADIENT
+      borderRadius: '1.75rem',
+      padding: '2rem 2rem',
+      boxShadow: '0 24px 60px rgba(15,23,42,0.16)',
+      color: forestGreen,
+      display: 'grid',
+      gridTemplateColumns: isDesktop
+        ? 'minmax(0, 1.6fr) minmax(0, 1fr)'
+        : '1fr',
+      gap: '1.75rem',
+      alignItems: 'center',
+      transform: visible
+        ? `translateY(0) perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`
+        : 'translateY(30px)',
+      opacity: visible ? 1 : 0,
+      transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+      willChange: 'transform, opacity',
+    },
+    imageWrapper: {
+      display: isDesktop ? 'block' : 'none',
+      borderRadius: '1.4rem',
+      overflow: 'hidden',
+      boxShadow: '0 18px 45px rgba(15,23,42,0.25)',
+      backgroundColor: '#000',
+    },
+    image: {
       width: '100%',
       height: '100%',
       objectFit: 'cover',
-      opacity: 0.5,
-    },
-    mapButton: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: 'white',
-      color: '#064e3b',
-      padding: '0.5rem 1rem',
-      borderRadius: '0.5rem',
-      fontSize: '0.875rem',
-      fontWeight: 'bold',
-      boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
-      cursor: 'pointer',
-    },
-    formLabel: {
-      fontSize: '0.875rem',
-      fontWeight: '600',
-      color: '#3f3f46', // earth-800
       display: 'block',
-      marginBottom: '0.25rem',
     },
-    input: {
-      width: '100%',
-      padding: '0.75rem 1rem',
-      borderRadius: '0.75rem',
-      border: '1px solid #e5e7eb', // stone-200
-      outline: 'none',
-      transition: 'all 0.3s',
-    },
-    button: {
-      width: '100%',
-      backgroundColor: '#16a34a', // jungle-600
-      color: 'white',
-      fontWeight: 'bold',
-      padding: '1rem',
-      borderRadius: '1rem',
-      cursor: 'pointer',
+    columnRight: {
       display: 'flex',
-      alignItems: 'center',
+      flexDirection: 'column',
+      gap: '0.9rem',
       justifyContent: 'center',
-      gap: '0.5rem',
-      border: 'none',
-      transition: 'all 0.3s',
+      maxWidth: isDesktop ? '480px' : '100%',
+      color: forestGreen,
     },
-    buttonHover: {
-      backgroundColor: '#15803d', // jungle-700
-      boxShadow: '0 10px 20px rgba(0,0,0,0.2)',
+    title: {
+      fontSize: '1.6rem',
+      fontWeight: 'bold',
+      color: forestGreen,
+      textShadow: '1px 1px 0 #ffffff',
+      lineHeight: 1.2,
     },
-    grid: {
-      display: 'grid',
-      gap: '1.5rem',
+    highlight: {
+      display: 'inline-block',
+      padding: '0.2rem 0.8rem',
+      borderRadius: '9999px',
+      backgroundColor: forestGreen,
+      color: '#ffffff',
+      fontSize: '0.7rem',
+      fontWeight: 700,
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      width: 'fit-content',
+      marginBottom: '0.3rem',
     },
-    gridCols2: {
-      gridTemplateColumns: '1fr',
+    paragraph: {
+      color: forestGreen,
+      fontWeight: 500,
+      lineHeight: 1.5,
+      margin: 0,
     },
-    gridCols2Md: {
-      gridTemplateColumns: '1fr 1fr',
+    infoList: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.8rem',
+      marginTop: '0.4rem',
     },
-    textarea: {
-      width: '100%',
-      padding: '0.75rem 1rem',
-      borderRadius: '0.75rem',
-      border: '1px solid #e5e7eb',
-      resize: 'none',
-      height: '8rem',
-      outline: 'none',
-      transition: 'all 0.3s',
+    infoItem: {
+      display: 'flex',
+      gap: '0.6rem',
+      alignItems: 'center',
+      color: forestGreen,
+    },
+    infoHeading: {
+      fontWeight: 700,
+      margin: 0,
+      color: forestGreen,
+      fontSize: '0.95rem',
+    },
+    infoSub: {
+      margin: 0,
+      lineHeight: 1.35,
+      fontSize: '0.9rem',
+      color: forestGreen,
     },
   };
 
-  // Optional: add hover effect dynamically
-  const [hovered, setHovered] = React.useState(false);
-
   return (
     <section id={SectionId.CONTACT} style={styles.section}>
+      <div style={styles.overlay}></div>
+
       <div style={styles.container}>
         <div
-          style={{
-            ...styles.flex,
-            ...(window.innerWidth >= 1024 ? styles.flexLg : {}),
-          }}
+          ref={cardRef}
+          style={styles.card}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
         >
-          {/* Left Panel */}
-          <div
-            style={{
-              ...styles.leftPanel,
-              ...(window.innerWidth >= 1024 ? styles.leftPanelLg : {}),
-            }}
-          >
-            <div>
-              <h2 style={styles.title}>Get in Touch</h2>
-              <p style={styles.paragraph}>
-                Have questions about your upcoming stay? Our concierge team is ready to assist you in planning your perfect jungle adventure.
-              </p>
-
-              <div>
-                <div style={styles.infoItem}>
-                  <Phone size={24} color="#86efac" />
-                  <div>
-                    <h3 style={styles.infoText}>Phone</h3>
-                    <p style={styles.infoSubtext}>+1 (555) 123-4567</p>
-                  </div>
-                </div>
-
-                <div style={styles.infoItem}>
-                  <Mail size={24} color="#86efac" />
-                  <div>
-                    <h3 style={styles.infoText}>Email</h3>
-                    <p style={styles.infoSubtext}>reservations@thejunglestory.com</p>
-                  </div>
-                </div>
-
-                <div style={styles.infoItem}>
-                  <MapPin size={24} color="#86efac" />
-                  <div>
-                    <h3 style={styles.infoText}>Location</h3>
-                    <p style={styles.infoSubtext}>
-                      Rainforest Sector 4,<br />Amazon Basin, Brazil
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ marginTop: '3rem' }}>
-              <div style={styles.mapWrapper}>
-                <img
-                  src="https://picsum.photos/id/10/400/200"
-                  alt="Map Location"
-                  style={styles.mapImage}
-                />
-                <button style={styles.mapButton}>Open in Maps</button>
-              </div>
-            </div>
+          {/* Left: image */}
+          <div style={styles.imageWrapper}>
+            <img
+              src="/Images/imageEighteen.jpg"
+              alt="Pathway to The Jungle Story"
+              style={styles.image}
+            />
           </div>
 
-          {/* Right Panel (Form) */}
-          <div
-            style={{
-              ...styles.rightPanel,
-              ...(window.innerWidth >= 1024 ? styles.rightPanelLg : {}),
-            }}
-            id="book-now"
-          >
-            <h2 style={{ ...styles.title, color: '#3f3f46' }}>Book Your Stay</h2>
-            <p style={{ color: '#6b7280', marginBottom: '2rem' }}>Begin your story today.</p>
+          {/* Right: text */}
+          <div style={styles.columnRight}>
+            <span className="travel-heading" style={styles.highlight}>
+              Plan Your Escape
+            </span>
 
-            <form
-              style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-              onSubmit={(e) => e.preventDefault()}
-            >
-              {/* Name Grid */}
-              <div
-                style={{
-                  ...styles.grid,
-                  ...(window.innerWidth >= 768 ? styles.gridCols2Md : styles.gridCols2),
-                }}
-              >
+            <h2 className="travel-heading" style={styles.title}>
+              Reach The Jungle Story
+            </h2>
+
+            <p style={styles.paragraph}>
+              Share your travel dates, and the team will help arrange stays,
+              transfers, and curated jungle experiences tailored to your pace.
+            </p>
+
+            <div style={styles.infoList}>
+              <div style={styles.infoItem}>
+                <Phone size={22} color={forestGreen} />
                 <div>
-                  <label style={styles.formLabel}>First Name</label>
-                  <input type="text" placeholder="John" style={styles.input} />
-                </div>
-                <div>
-                  <label style={styles.formLabel}>Last Name</label>
-                  <input type="text" placeholder="Doe" style={styles.input} />
+                  <h3 style={styles.infoHeading}>Phone</h3>
+                  <p style={styles.infoSub}>+91 9015483181</p>
                 </div>
               </div>
 
-              <div>
-                <label style={styles.formLabel}>Email Address</label>
-                <input type="email" placeholder="john@example.com" style={styles.input} />
-              </div>
-
-              {/* Check-in & Guests */}
-              <div
-                style={{
-                  ...styles.grid,
-                  ...(window.innerWidth >= 768 ? styles.gridCols2Md : styles.gridCols2),
-                }}
-              >
+              <div style={styles.infoItem}>
+                <Mail size={22} color={forestGreen} />
                 <div>
-                  <label style={styles.formLabel}>Check-in</label>
-                  <input type="date" style={styles.input} />
-                </div>
-                <div>
-                  <label style={styles.formLabel}>Guests</label>
-                  <select style={styles.input}>
-                    <option>1 Guest</option>
-                    <option>2 Guests</option>
-                    <option>3 Guests</option>
-                    <option>4+ Guests</option>
-                  </select>
+                  <h3 style={styles.infoHeading}>Email</h3>
+                  <p style={styles.infoSub}>reservations@thejunglestory.com</p>
                 </div>
               </div>
 
-              <div>
-                <label style={styles.formLabel}>Special Requests</label>
-                <textarea placeholder="Dietary restrictions, anniversary celebration, etc." style={styles.textarea}></textarea>
+              <div style={styles.infoItem}>
+                <MapPin size={22} color={forestGreen} />
+                <div>
+                  <h3 style={styles.infoHeading}>Address</h3>
+                  <p style={styles.infoSub}>
+                    Village Gawai, Patgehar Road
+                    <br />
+                    Shimla, Himachal Pradesh-171012
+                  </p>
+                </div>
               </div>
+            </div>
 
-              <button
-                type="submit"
-                style={{
-                  ...styles.button,
-                  ...(hovered ? styles.buttonHover : {}),
-                }}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-              >
-                <Calendar size={20} /> Check Availability
-              </button>
-            </form>
           </div>
         </div>
       </div>

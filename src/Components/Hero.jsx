@@ -1,155 +1,265 @@
-// import React, { useState, useEffect } from 'react';
-// import { SectionId } from '../constants';
-
-// export const Hero = () => {
-//   const [active, setActive] = useState(0);
-
-//   const heroImages = [
-//     '/Images/imageThirtySixCrop.jpg',
-//     '/Images/imageThirtySixSunset.jpg',
-//     '/Images/imageTwentyOne.jpg',
-//     '/Images/imageFourteen.jpg',
-//     '/Images/imageThirtyThree.jpg',
-//     '/Images/imageThree.jpg',
-//     '/Images/imageFour.jpg',
-//     '/Images/imageFive.jpg',
-//     '/Images/imageSix.jpg',
-//   ];
-
-//   useEffect(() => {
-//     const id = setInterval(() => {
-//       setActive(prev => (prev + 1) % heroImages.length);
-//     }, 3500);
-//     return () => clearInterval(id);
-//   }, [heroImages.length]);
-
-//   const slideStyle = (position) => {
-//     const base = {
-//       position: 'absolute',
-//       top: '50%',
-//       transform: 'translateY(-50%)',
-//       borderRadius: '24px',
-//       overflow: 'hidden',
-//       boxShadow: '0 25px 60px rgba(0,0,0,0.4)',
-//       transition: 'all 0.6s ease',
-//       cursor: 'pointer',
-//     };
-//     if (position === -1)
-//       return { ...base, left: '5%', width: '26%', height: '58%', opacity: 0.7, transform: 'translateY(-50%) rotate(-3deg)' };
-//     if (position === 1)
-//       return { ...base, right: '5%', width: '26%', height: '58%', opacity: 0.7, transform: 'translateY(-50%) rotate(3deg)' };
-//     return { ...base, left: '50%', width: '52%', height: '70%', transform: 'translate(-50%, -50%)', zIndex: 5, opacity: 1 };
-//   };
-
-//   const getIndex = (offset) =>
-//     (active + offset + heroImages.length) % heroImages.length;
-
-//   return (
-//     <section id={SectionId.HOME} style={{ width: '100%', backgroundColor: '#f7f7f7', paddingBottom: '4rem' }}>
-//       <div style={{ width: '100%', height: '520px', paddingTop: '80px', position: 'relative' }}>
-//         <div style={slideStyle(-1)} onClick={() => setActive(getIndex(-1))}>
-//           <img src={heroImages[getIndex(-1)]} alt="Slide" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-//         </div>
-
-//         <div style={slideStyle(0)}>
-//           <img src={heroImages[active]} alt="Slide" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-//         </div>
-
-//         <div style={slideStyle(1)} onClick={() => setActive(getIndex(1))}>
-//           <img src={heroImages[getIndex(1)]} alt="Slide" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
 
 
+// HeroSection.jsx
+import React, { useState, useRef, useEffect } from "react";
+import { ArrowRight } from "lucide-react";
+import { SectionId } from "../constants";
+import AuthModal from "./AuthModal";
 
-import React, { useState, useEffect } from 'react';
-import { SectionId } from '../constants';
+export const HeroSection = () => {
+  const [hoverPrimary, setHoverPrimary] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
-export const Hero = () => {
-  const [active, setActive] = useState(0);
-  const [offsetY, setOffsetY] = useState(0);
-
-  const heroImages = [
-    '/Images/imageThirtySixCrop.jpg',
-    '/Images/imageThirtySixSunset.jpg',
-    '/Images/imageTwentyOne.jpg',
-    '/Images/imageFourteen.jpg',
-    '/Images/imageThirtyThree.jpg',
-  ];
+  const textRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => setOffsetY(window.pageYOffset);
-    window.addEventListener('scroll', handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setAnimate(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-    const interval = setInterval(() => {
-      setActive(prev => (prev + 1) % heroImages.length);
-    }, 3500);
+    if (textRef.current) observer.observe(textRef.current);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearInterval(interval);
+      if (textRef.current) observer.unobserve(textRef.current);
     };
-  }, [heroImages.length]);
-
-  const slideStyle = (position) => {
-    const base = {
-      position: 'absolute',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      borderRadius: '24px',
-      overflow: 'hidden',
-      boxShadow: '0 25px 60px rgba(0,0,0,0.4)',
-      transition: 'all 0.6s ease',
-      cursor: 'pointer',
-    };
-    if (position === -1)
-      return {
-        ...base,
-        left: '5%',
-        width: '26%',
-        height: '58%',
-        opacity: 0.7,
-        transform: `translateY(-50%) rotate(-3deg) translateY(${offsetY * 0.2}px)`,
-      };
-    if (position === 1)
-      return {
-        ...base,
-        right: '5%',
-        width: '26%',
-        height: '58%',
-        opacity: 0.7,
-        transform: `translateY(-50%) rotate(3deg) translateY(${offsetY * 0.2}px)`,
-      };
-    return {
-      ...base,
-      left: '50%',
-      width: '52%',
-      height: '70%',
-      transform: `translate(-50%, -50%) translateY(${offsetY * 0.4}px)`,
-      zIndex: 5,
-      opacity: 1,
-    };
-  };
-
-  const getIndex = (offset) =>
-    (active + offset + heroImages.length) % heroImages.length;
+  }, []);
 
   return (
-    <section id={SectionId.HOME} style={{ width: '100%', backgroundColor: '#FFD9DC', paddingBottom: '4rem', position: 'relative', height: '520px',marginTop: '50px', boxShadow: '0px 20px 40px rgba(0,0,0, 0.2)',  }}>
-      <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-        <div style={slideStyle(-1)} onClick={() => setActive(getIndex(-1))}>
-          <img src={heroImages[getIndex(-1)]} alt="Slide" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+    <>
+      {/* Inject your animation CSS */}
+      <style>{`
+        .animated-container {
+          display: inline-block;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
+        .showup {
+          animation: showup 7s infinite;
+        }
+
+        .reveal {
+          width: 0px;
+          display:inline-block;
+          overflow:hidden;
+          white-space:nowrap;
+          animation: reveal 7s infinite;
+        }
+
+        .slidein {
+          margin-left: -355px;
+          display:inline-block;
+          animation: slidein 7s infinite;
+        }
+
+        /* Add delay classes for sync */
+        .delay-1 .reveal,
+        .delay-1 .slidein {
+          animation-delay: 1s;
+        }
+
+        .delay-2 .reveal,
+        .delay-2 .slidein {
+          animation-delay: 2s;
+        }
+
+        .delay-3 .reveal,
+        .delay-3 .slidein {
+          animation-delay: 3.5s;
+        }
+
+        @keyframes showup {
+          0% { opacity: 0; }
+          20% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { opacity: 0; }
+        }
+
+        @keyframes slidein {
+          0% { margin-left: -800px; }
+          20% { margin-left: -800px; }
+          35% { margin-left: 0px; }
+          100% { margin-left: 0px; }
+        }
+
+        @keyframes reveal {
+          0% { opacity:0; width:0px; }
+          20% { opacity:1; width:0px; }
+          30% { width:355px; }
+          80% { opacity:1; }
+          100% { opacity:0; width:100%; }
+        }
+
+        /* Responsive fonts */
+        
+/* Allow text wrap on smaller screens */
+@media (max-width: 768px) {
+  .reveal {
+    white-space: normal !important; /* allows line wrap */
+  }
+  h1 {
+    font-size: clamp(22px, 6vw, 40px);
+  }
+  p {
+    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .reveal {
+    white-space: normal !important; /* ensures text wraps properly */
+  }
+  h1 {
+    font-size: clamp(20px, 7vw, 32px);
+  }
+  p {
+    font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+  }
+  button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+        }
+      `}</style>
+
+      <section
+        id={SectionId.HERO}
+        style={{
+          width: "100%",
+          margin: "0 auto",
+          backgroundImage: 'url("/Images/imageThirtySixSunset.jpg")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          minHeight: "70vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "60px 20px",
+          boxSizing: "border-box",
+        }}
+      >
+        <div
+          ref={textRef}
+          style={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+            maxWidth: "900px",
+          }}
+        >
+          {/* MAIN HEADING */}
+          <div className={animate ? "delay-1" : ""}>
+            <div className={animate ? "reveal" : ""}>
+              <div className={animate ? "slidein" : ""}>
+                <h1
+                 className="travel-heading"
+                  style={{
+                    fontSize: "clamp(28px, 6vw, 50px)",
+                    fontWeight: 700,
+                    color: "white",
+                    textShadow: `
+                      0px 0px 6px rgba(98,129,65,0.9),
+                      0px 0px 12px rgba(98,129,65,0.7),
+                      2px 2px 4px rgba(0,0,0,0.2)
+                    `,
+                    width: "100%",
+                    marginBottom: 0,
+                  }}
+                >
+                  Live In Asia's Densest Forest
+                </h1>
+              </div>
+            </div>
+          </div>
+
+          {/* SUB HEADING 1 */}
+          <div className={animate ? "delay-2" : ""}>
+            <div className={animate ? "reveal" : ""}>
+              <div className={animate ? "slidein" : ""}>
+                <p
+                 className="travel-heading"
+                  style={{
+                    color: "white",
+                    textShadow: `
+                      0px 0px 6px rgba(98,129,65,0.9),
+                      0px 0px 12px rgba(98,129,65,0.7),
+                      2px 2px 4px rgba(0,0,0,0.2)
+                    `,
+                    fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                    lineHeight: "1.7",
+                    fontWeight: 900,
+                    marginBottom: 0,
+                  }}
+                >
+                  Disconnect from the noise & reconnect with nature.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* SUB HEADING 2 */}
+          <div className={animate ? "delay-3" : ""}>
+            <div className={animate ? "reveal" : ""}>
+              <div className={animate ? "slidein" : ""}>
+                <p
+                 className="travel-heading"
+                  style={{
+                    color: "white",
+                    textShadow: `
+                      0px 0px 6px rgba(98,129,65,0.9),
+                      0px 0px 12px rgba(98,129,65,0.7),
+                      2px 2px 4px rgba(0,0,0,0.2)
+                    `,
+                    fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
+                    lineHeight: "1.7",
+                    fontWeight: 900,
+                    marginBottom: 0,
+                  }}
+                >
+                  Experience eco-luxury living amidst untouched Himalayan forests.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* BUTTON */}
+          <button
+            style={{
+              padding: "0.8rem 2rem",
+              borderRadius: "9999px",
+              border: "none",
+              cursor: "pointer",
+              background: "#628141",
+              color: "white",
+              fontWeight: 600,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+              transition: "all 0.25s ease",
+              marginTop: "1rem",
+            }}
+            onMouseEnter={() => setHoverPrimary(true)}
+            onMouseLeave={() => setHoverPrimary(false)}
+            onClick={() => setShowModal(true)}
+          >
+            Book Now <ArrowRight size={18} />
+          </button>
         </div>
-        <div style={slideStyle(0)}>
-          <img src={heroImages[active]} alt="Slide" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
-        <div style={slideStyle(1)} onClick={() => setActive(getIndex(1))}>
-          <img src={heroImages[getIndex(1)]} alt="Slide" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
-      </div>
-    </section>
+      </section>
+
+      <AuthModal open={showModal} onClose={() => setShowModal(false)} />
+    </>
   );
 };

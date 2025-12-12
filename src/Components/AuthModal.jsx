@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 
 const AuthModal = ({ open, onClose }) => {
@@ -5,12 +7,15 @@ const AuthModal = ({ open, onClose }) => {
     name: "",
     contact_number: "",
     address_line: "",
+    age:"",
     state: "",
     city: ""
   });
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [hoverCTA, setHoverCTA] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
 
   if (!open) return null;
 
@@ -27,14 +32,58 @@ const AuthModal = ({ open, onClose }) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+// ---- VALIDATIONS ----
+
+// Contact must be exactly 10 digits
+// ---- VALIDATIONS ----
+
+// Contact empty
+if (!formData.contact_number) {
+  setMessage("Please enter contact number.");
+  setLoading(false);
+  return;
+}
+
+// Contact must be only digits
+if (!/^\d+$/.test(formData.contact_number)) {
+  setMessage("Contact number must contain only numbers.");
+  setLoading(false);
+  return;
+}
+
+// Contact must be 10 digits
+if (formData.contact_number.length < 10) {
+  setMessage("Please enter 10 digits.");
+  setLoading(false);
+  return;
+}
+
+// Age empty
+if (!formData.age) {
+  setMessage("Please enter age.");
+  setLoading(false);
+  return;
+}
+
+// Age must be digits only
+if (!/^\d+$/.test(formData.age)) {
+  setMessage("Age must be a valid number.");
+  setLoading(false);
+  return;
+}
+
+// ---- END VALIDATIONS ----
+
+
+// ----------------------
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/visitor/entries/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-API-KEY": "TJS-API-KEYMAINAUTH",  // must match middleware
-          "X-API-ID": "TJS-001"                // must match middleware
+          "X-API-KEY": "TJS-API-KEYMAINAUTH",
+          "X-API-ID": "TJS-001"
         },
         body: JSON.stringify(formData)
       });
@@ -43,11 +92,11 @@ const AuthModal = ({ open, onClose }) => {
 
       if (response.ok) {
         setMessage("Visitor entry saved successfully!");
-
         setFormData({
           name: "",
           contact_number: "",
           address_line: "",
+          age:"",
           state: "",
           city: ""
         });
@@ -61,6 +110,17 @@ const AuthModal = ({ open, onClose }) => {
     setLoading(false);
   };
 
+  // helper to style each input with pink focus ring
+  const inputStyle = (name) => ({
+    ...baseInput,
+    borderColor: focusedField === name ? "#628141" : "#ccc",
+    boxShadow:
+      focusedField === name
+        ? "0 0 0 2px #aad194ff"
+        : "none",
+    outline: "none",
+  });
+
   return (
     <div style={backdrop}>
       <div style={modalBox}>
@@ -71,48 +131,91 @@ const AuthModal = ({ open, onClose }) => {
             type="text"
             name="name"
             placeholder="Full Name"
-            style={input}
+            style={inputStyle("name")}
             value={formData.name}
             onChange={handleChange}
+            onFocus={() => setFocusedField("name")}
+            onBlur={() => setFocusedField(null)}
           />
 
-          <input
-            type="text"
-            name="contact_number"
-            placeholder="Contact"
-            style={input}
-            value={formData.contact_number}
-            onChange={handleChange}
-          />
+        <input
+  type="text"
+  name="contact_number"
+  placeholder="Contact "
+  maxLength="10"
+  value={formData.contact_number}
+  onChange={(e) => {
+    const val = e.target.value.replace(/\D/g, ""); // numbers only
+    setFormData({ ...formData, contact_number: val });
+  }}
+  style={inputStyle("contact_number")}
+  onFocus={() => setFocusedField("contact_number")}
+  onBlur={() => setFocusedField(null)}
+/>
 
           <input
             type="text"
             name="address_line"
             placeholder="Address"
-            style={input}
+            style={inputStyle("address_line")}
             value={formData.address_line}
             onChange={handleChange}
+            onFocus={() => setFocusedField("address_line")}
+            onBlur={() => setFocusedField(null)}
           />
+  <input
+  type="text"
+  name="age"
+  placeholder="Age"
+  value={formData.age}
+  onChange={(e) => {
+    const val = e.target.value.replace(/\D/g, ""); // allow only digits
+    setFormData({ ...formData, age: val });
+  }}
+  style={inputStyle("age")}
+  onFocus={() => setFocusedField("age")}
+  onBlur={() => setFocusedField(null)}
+/>
 
           <input
             type="text"
             name="state"
             placeholder="State"
-            style={input}
+            style={inputStyle("state")}
             value={formData.state}
             onChange={handleChange}
+            onFocus={() => setFocusedField("state")}
+            onBlur={() => setFocusedField(null)}
           />
 
           <input
             type="text"
             name="city"
             placeholder="City"
-            style={input}
+            style={inputStyle("city")}
             value={formData.city}
             onChange={handleChange}
+            onFocus={() => setFocusedField("city")}
+            onBlur={() => setFocusedField(null)}
           />
 
-          <button style={submitBtn} disabled={loading}>
+          <button
+            style={{
+              ...submitBtnBase,
+              background: hoverCTA
+                ? "linear-gradient(135deg, #628120, #628120)"
+                : "linear-gradient(135deg, #628141, #628141)",
+              boxShadow: hoverCTA
+                ? "0 10px 25px #628141"
+                : "0 6px 18px rgba(0,0,0,0.18)",
+              transform: hoverCTA ? "translateY(-1px)" : "translateY(0)",
+              opacity: loading ? 0.8 : 1,
+              cursor: loading ? "wait" : "pointer",
+            }}
+            disabled={loading}
+            onMouseEnter={() => setHoverCTA(true)}
+            onMouseLeave={() => setHoverCTA(false)}
+          >
             {loading ? "Submitting..." : "Sign Up"}
           </button>
         </form>
@@ -142,23 +245,32 @@ const modalBox = {
   width: '90%',
   maxWidth: '420px',
   background: 'white',
-  borderRadius: '12px',
+  borderRadius: '16px',
   padding: '2rem',
   textAlign: 'center',
   position: 'relative',
 };
 
-const title = { fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem' };
+const title = { fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color:"#628141"};
 const form = { display: 'flex', flexDirection: 'column', gap: '1rem' };
-const input = { padding: '0.75rem', borderRadius: '8px', border: '1px solid #ccc' };
-const submitBtn = {
-  background: '#14532d',
+
+const baseInput = {
+  padding: '0.75rem',
+  borderRadius: '10px',
+  border: '1px solid #ccc',
+  fontSize: '0.9rem',
+  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+};
+
+const submitBtnBase = {
   color: 'white',
   padding: '0.75rem',
-  borderRadius: '8px',
+  borderRadius: '999px',
   fontWeight: 600,
-  cursor: 'pointer',
+  border: 'none',
+  transition: 'all 0.25s ease',
 };
+
 const closeBtn = {
   position: 'absolute',
   top: '12px',
