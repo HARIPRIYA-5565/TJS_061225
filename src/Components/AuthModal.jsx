@@ -126,7 +126,7 @@ if (!/^\d+$/.test(formData.age)) {
   return (
     <div style={backdrop}>
       <div style={modalBox}>
-        <h2 style={title}>Sign Up</h2>
+        <h2 style={title}>Send Request</h2>
 
         <form style={form} onSubmit={handleSubmit}>
           <input
@@ -218,7 +218,7 @@ if (!/^\d+$/.test(formData.age)) {
             onMouseEnter={() => setHoverCTA(true)}
             onMouseLeave={() => setHoverCTA(false)}
           >
-            {loading ? "Submitting..." : "Sign Up"}
+            {loading ? "Submitting..." : "Send Request"}
           </button>
         </form>
 
