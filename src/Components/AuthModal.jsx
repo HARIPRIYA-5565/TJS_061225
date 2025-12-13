@@ -5,6 +5,9 @@ import React, { useState } from 'react';
 const appId = process.env.REACT_APP_X_API_ID;
 const appKey = process.env.REACT_APP_X_API_KEY;
 
+const API_BASE = process.env.REACT_APP_API_BASE || '/api';
+const endpoint = `${API_BASE.replace(/\/$/, '')}/visitor/entries/`;
+
 const AuthModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -30,88 +33,95 @@ const AuthModal = ({ open, onClose }) => {
     });
   };
 
-  // Handle form submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-// ---- VALIDATIONS ----
+// Handle form submit
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
 
-// Contact must be exactly 10 digits
-// ---- VALIDATIONS ----
-
-// Contact empty
-if (!formData.contact_number) {
-  setMessage("Please enter contact number.");
-  setLoading(false);
-  return;
-}
-
-// Contact must be only digits
-if (!/^\d+$/.test(formData.contact_number)) {
-  setMessage("Contact number must contain only numbers.");
-  setLoading(false);
-  return;
-}
-
-// Contact must be 10 digits
-if (formData.contact_number.length < 10) {
-  setMessage("Please enter 10 digits.");
-  setLoading(false);
-  return;
-}
-
-// Age empty
-if (!formData.age) {
-  setMessage("Please enter age.");
-  setLoading(false);
-  return;
-}
-
-// Age must be digits only
-if (!/^\d+$/.test(formData.age)) {
-  setMessage("Age must be a valid number.");
-  setLoading(false);
-  return;
-}
-
-// ---- END VALIDATIONS ----
-
-
-// ----------------------
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/visitor/entries/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": appKey,
-          "X-API-ID": appId,
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage("Visitor entry saved successfully!");
-        setFormData({
-          name: "",
-          contact_number: "",
-          address_line: "",
-          age:"",
-          state: "",
-          city: ""
-        });
-      } else {
-        setMessage(data.message || "Something went wrong");
-      }
-    } catch (error) {
-      setMessage("Network error! Please try again.");
-    }
-
+  // ---- VALIDATIONS (unchanged) ----
+  if (!formData.contact_number) {
+    setMessage("Please enter contact number.");
     setLoading(false);
-  };
+    return;
+  }
+  if (!/^\d+$/.test(formData.contact_number)) {
+    setMessage("Contact number must contain only numbers.");
+    setLoading(false);
+    return;
+  }
+  if (formData.contact_number.length < 10) {
+    setMessage("Please enter 10 digits.");
+    setLoading(false);
+    return;
+  }
+  if (!formData.age) {
+    setMessage("Please enter age.");
+    setLoading(false);
+    return;
+  }
+  if (!/^\d+$/.test(formData.age)) {
+    setMessage("Age must be a valid number.");
+    setLoading(false);
+    return;
+  }
+  // ---- END VALIDATIONS ----
 
+  // runtime-safe headers (fall back to window.__TJS_RUNTIME if env is empty)
+  const runtime = (typeof window !== "undefined" && window.__TJS_RUNTIME) ? window.__TJS_RUNTIME : {};
+  const realAppId = appId || runtime.API_ID || "";
+  const realAppKey = appKey || runtime.API_KEY || "";
+
+  // DEBUG: log what we're sending (will show in browser console)
+  console.log("DEBUG: submit visitor", {
+    endpoint,
+    headers: { "X-API-ID": realAppId, "X-API-KEY": realAppKey },
+    body: formData
+  });
+
+  if (!realAppId || !realAppKey) {
+    // helpful error shown to user + console
+    console.error("Missing API_ID or API_KEY (appId/appKey)", { appId, appKey, runtime });
+    setMessage("Missing API credentials in the frontend. Contact admin or rebuild with correct env.");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": realAppKey,
+        "X-API-ID": realAppId,
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json().catch(()=>({}));
+
+    if (response.ok) {
+      setMessage("Visitor entry saved successfully!");
+      setFormData({
+        name: "",
+        contact_number: "",
+        address_line: "",
+        age: "",
+        state: "",
+        city: ""
+      });
+    } else {
+      // show backend message if present
+      setMessage(data.message || `Error ${response.status}: ${response.statusText || "Something went wrong"}`);
+      console.warn("Visitor API responded:", response.status, data);
+    }
+  } catch (error) {
+    console.error("Network error while submitting visitor:", error);
+    setMessage("Network error! Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
   // helper to style each input with pink focus ring
   const inputStyle = (name) => ({
     ...baseInput,

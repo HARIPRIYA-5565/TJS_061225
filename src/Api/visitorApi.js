@@ -1,8 +1,8 @@
 // src/api/visitorApi.js
-
-const API_URL = "http://127.0.0.1:8000/api/visitor/entries/";
-const API_KEY = "TJS-API-KEYMAINAUTH";   // your allowed key
-const API_ID = "TJS-001"; 
+const API_BASE = process.env.REACT_APP_API_BASE || '/api'; // e.g. /api in production
+const API_URL = `${API_BASE.replace(/\/$/, '')}/visitor/entries/`; // ensures single slash
+const API_KEY = process.env.REACT_APP_X_API_KEY;
+const API_ID = process.env.REACT_APP_X_API_ID;
 
 export const createVisitor = async (visitorData) => {
   try {
@@ -10,8 +10,8 @@ export const createVisitor = async (visitorData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "API_KEY": "TJS-API-KEYMAINAUTH",  
-          "API_ID": "TJS-001"        // ⬅ IMPORTANT custom header
+        "X-API-KEY": API_KEY,
+        "X-API-ID": API_ID
       },
       body: JSON.stringify(visitorData),
     });

@@ -13,7 +13,7 @@ import HeroCarousel from './Components/HeroCarousel';
 
 const App = () => {
   return (
-    <ReactRouterDOM.BrowserRouter>
+    <ReactRouterDOM.BrowserRouter basename="/lander">
       <Header />
       <ReactRouterDOM.Routes>
         <ReactRouterDOM.Route
