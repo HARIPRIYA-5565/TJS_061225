@@ -1,10 +1,9 @@
-
-
 // HeroSection.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { SectionId } from "../constants";
 import AuthModal from "./AuthModal";
+import imageThirtySixCrop from "../assets/Images/imageThirtySixCrop.jpg";
 
 export const HeroSection = () => {
   const [hoverPrimary, setHoverPrimary] = useState(false);
@@ -31,6 +30,14 @@ export const HeroSection = () => {
       if (textRef.current) observer.unobserve(textRef.current);
     };
   }, []);
+
+  const green = "#647328";
+
+  const textGlow = `
+    0 0 4px rgba(0,0,0,0.55),
+    0 0 10px rgba(100,115,40,0.8),
+    0 0 22px rgba(100,115,40,0.9)
+  `;
 
   return (
     <>
@@ -99,34 +106,32 @@ export const HeroSection = () => {
         }
 
         /* Responsive fonts */
-        
-/* Allow text wrap on smaller screens */
-@media (max-width: 768px) {
-  .reveal {
-    white-space: normal !important; /* allows line wrap */
-  }
-  h1 {
-    font-size: clamp(22px, 6vw, 40px);
-  }
-  p {
-    font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-  }
-}
+        @media (max-width: 768px) {
+          .reveal {
+            white-space: normal !important; /* allows line wrap */
+          }
+          h1 {
+            font-size: clamp(22px, 6vw, 40px);
+          }
+          p {
+            font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+          }
+        }
 
-@media (max-width: 480px) {
-  .reveal {
-    white-space: normal !important; /* ensures text wraps properly */
-  }
-  h1 {
-    font-size: clamp(20px, 7vw, 32px);
-  }
-  p {
-    font-size: clamp(0.75rem, 3.5vw, 0.9rem);
-  }
-  button {
-    padding: 0.6rem 1.5rem;
-    font-size: 0.9rem;
-  }
+        @media (max-width: 480px) {
+          .reveal {
+            white-space: normal !important; /* ensures text wraps properly */
+          }
+          h1 {
+            font-size: clamp(20px, 7vw, 32px);
+          }
+          p {
+            font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+          }
+          button {
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+          }
         }
       `}</style>
 
@@ -135,7 +140,7 @@ export const HeroSection = () => {
         style={{
           width: "100%",
           margin: "0 auto",
-          backgroundImage: 'url("/Images/imageThirtySixSunset.jpg")',
+          backgroundImage: `url(${imageThirtySixCrop})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -164,21 +169,17 @@ export const HeroSection = () => {
             <div className={animate ? "reveal" : ""}>
               <div className={animate ? "slidein" : ""}>
                 <h1
-                 className="travel-heading"
+                  className="travel-heading"
                   style={{
                     fontSize: "clamp(28px, 6vw, 50px)",
                     fontWeight: 700,
                     color: "white",
-                    textShadow: `
-                      0px 0px 6px rgba(98,129,65,0.9),
-                      0px 0px 12px rgba(98,129,65,0.7),
-                      2px 2px 4px rgba(0,0,0,0.2)
-                    `,
+                    textShadow: textGlow,
                     width: "100%",
                     marginBottom: 0,
                   }}
                 >
-                  Live In Asia's Densest Forest
+                  Live In Asia&apos;s Densest Forest
                 </h1>
               </div>
             </div>
@@ -189,21 +190,17 @@ export const HeroSection = () => {
             <div className={animate ? "reveal" : ""}>
               <div className={animate ? "slidein" : ""}>
                 <p
-                 className="travel-heading"
+                  className="travel-heading"
                   style={{
                     color: "white",
-                    textShadow: `
-                      0px 0px 6px rgba(98,129,65,0.9),
-                      0px 0px 12px rgba(98,129,65,0.7),
-                      2px 2px 4px rgba(0,0,0,0.2)
-                    `,
+                    textShadow: textGlow,
                     fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                     lineHeight: "1.7",
                     fontWeight: 900,
                     marginBottom: 0,
                   }}
                 >
-                  Disconnect from the noise & reconnect with nature.
+                  Situated Just 11 kms from Shimla, Himachal Pradesh
                 </p>
               </div>
             </div>
@@ -214,21 +211,17 @@ export const HeroSection = () => {
             <div className={animate ? "reveal" : ""}>
               <div className={animate ? "slidein" : ""}>
                 <p
-                 className="travel-heading"
+                  className="travel-heading"
                   style={{
                     color: "white",
-                    textShadow: `
-                      0px 0px 6px rgba(98,129,65,0.9),
-                      0px 0px 12px rgba(98,129,65,0.7),
-                      2px 2px 4px rgba(0,0,0,0.2)
-                    `,
+                    textShadow: textGlow,
                     fontSize: "clamp(0.9rem, 1.2vw, 1.05rem)",
                     lineHeight: "1.7",
                     fontWeight: 900,
                     marginBottom: 0,
                   }}
                 >
-                  Experience eco-luxury living amidst untouched Himalayan forests.
+                 Adjacent to Asia's densest forest, the Shimla Forest Sanctuary
                 </p>
               </div>
             </div>
@@ -236,12 +229,13 @@ export const HeroSection = () => {
 
           {/* BUTTON */}
           <button
+            className="travel-heading"
             style={{
               padding: "0.8rem 2rem",
               borderRadius: "9999px",
               border: "none",
               cursor: "pointer",
-              background: "#628141",
+              background: hoverPrimary ? "#4f5b1f" : green,
               color: "white",
               fontWeight: 600,
               display: "inline-flex",
@@ -249,6 +243,13 @@ export const HeroSection = () => {
               gap: "0.35rem",
               transition: "all 0.25s ease",
               marginTop: "1rem",
+              boxShadow: `
+                0 0 12px rgba(100,115,40,0.65),
+                0 0 30px rgba(100,115,40,0.55)
+              `,
+              transform: hoverPrimary
+                ? "translateY(-1px) scale(1.02)"
+                : "translateY(0) scale(1)",
             }}
             onMouseEnter={() => setHoverPrimary(true)}
             onMouseLeave={() => setHoverPrimary(false)}
@@ -263,3 +264,5 @@ export const HeroSection = () => {
     </>
   );
 };
+
+export default HeroSection;

@@ -1,11 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 
+// Import all hero images explicitly
+import imageThirtySixCrop from "../assets/Images/imageThirtySixCrop.jpg";
+import imageThirtySixSunset from "../assets/Images/imageThirtySixSunset.jpg";
+import imageTwentyOne from "../assets/Images/imageTwentyOne.jpg";
+import imageThirtySeven from "../assets/Images/imageThirtySeven.jpg";
+import imageThirtyThree from "../assets/Images/imageThirtyThree.jpg";
+import imageFourtyThree from "../assets/Images/imageFourtyThree.jpg";
+
 const heroImages = [
-  "/Images/imageThirtySixCrop.jpg",
-  "/Images/imageThirtySixSunset.jpg",
-  "/Images/imageTwentyOne.jpg",
-  "/Images/imageFourteen.jpg",
-  "/Images/imageThirtyThree.jpg",
+  imageThirtySixCrop,
+  imageThirtySixSunset,
+  imageTwentyOne,
+  imageThirtySeven,
+  imageThirtyThree,
 ];
 
 const HeroCarousel = () => {
@@ -55,7 +63,7 @@ const HeroCarousel = () => {
         windowWidth < 640 ? "none" : "0 25px 60px rgba(0,0,0,0.25)",
       transition: "all 0.6s ease",
       cursor: "pointer",
-      border: "4px solid #628141", // green border for all slides
+      border: "4px solid #647328", // green border for all slides
     };
 
     const sectionHeight = windowWidth < 640 ? 400 : 600;
@@ -113,25 +121,22 @@ const HeroCarousel = () => {
   };
 
   return (
-  <div
-  ref={sectionRef}
-  style={{
-    height: windowWidth < 640 ? "400px" : "600px",
-    position: "relative",
-    margin: "0 auto",
-    overflow: "hidden",
-    padding: windowWidth < 640 ? "20px" : "0", // Apply 20px padding on all sides for small screens
-  }}
->
-
-      
-
+    <div
+      ref={sectionRef}
+      style={{
+        height: windowWidth < 640 ? "400px" : "600px",
+        position: "relative",
+        margin: "0 auto",
+        overflow: "hidden",
+        padding: windowWidth < 640 ? "20px" : "0",
+      }}
+    >
       {/* Background blurred image with white translucent overlay */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage: 'url("/Images/imageFourtyThree.jpg")',
+          backgroundImage: `url(${imageFourtyThree})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "blur(6px)",
@@ -142,8 +147,8 @@ const HeroCarousel = () => {
         style={{
           position: "absolute",
           inset: 0,
-          backgroundColor: "rgba(255,255,255,0.35)", // translucent white overlay
-          backdropFilter: "blur(2px)", // soft blur effect on overlay
+          backgroundColor: "rgba(255,255,255,0.35)",
+          backdropFilter: "blur(2px)",
           zIndex: 1,
         }}
       />
@@ -152,7 +157,7 @@ const HeroCarousel = () => {
       <div style={slideStyle(-1)} onClick={() => setActive(getIndex(-1))}>
         <img
           src={heroImages[getIndex(-1)]}
-          alt="Slide"
+          alt={`Slide ${getIndex(-1) + 1}`}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
@@ -161,7 +166,7 @@ const HeroCarousel = () => {
       <div style={slideStyle(0)}>
         <img
           src={heroImages[active]}
-          alt="Slide"
+          alt={`Active Slide ${active + 1}`}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
@@ -170,7 +175,7 @@ const HeroCarousel = () => {
       <div style={slideStyle(1)} onClick={() => setActive(getIndex(1))}>
         <img
           src={heroImages[getIndex(1)]}
-          alt="Slide"
+          alt={`Slide ${getIndex(1) + 1}`}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>

@@ -1,5 +1,6 @@
 // EventModal.jsx
 import React from "react";
+import eventDjNight from "../assets/Images/event_DjNight.jpg";
 
 export const EventModal = ({ open, onClose }) => {
   if (!open) return null;
@@ -27,7 +28,7 @@ export const EventModal = ({ open, onClose }) => {
             borderRadius: "24px",
             overflow: "hidden",
             boxShadow: "0 18px 40px rgba(0,0,0,0.25)",
-            backgroundImage: 'url("/Images/event_DjNight.jpg")',
+            backgroundImage: `url(${eventDjNight})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -44,7 +45,7 @@ export const EventModal = ({ open, onClose }) => {
             }}
           />
 
-          {/* top-right cross button */}
+          {/* close button */}
           <button
             onClick={onClose}
             style={{
@@ -60,6 +61,7 @@ export const EventModal = ({ open, onClose }) => {
               fontSize: "18px",
               lineHeight: "32px",
               cursor: "pointer",
+              zIndex: 10,
             }}
           >
             ×
@@ -67,41 +69,40 @@ export const EventModal = ({ open, onClose }) => {
         </div>
       </div>
 
-     <div
-  style={{
-    position: "fixed",
-    insetInline: 0,
-    bottom: 0,
-    display: "flex",
-    justifyContent: "center",
-    zIndex: 2000, // Put ABOVE blur layer
-  }}
->
-  <a
-  className="btn-main"
-  href="https://wa.me/919015483181?text=Hi,%20I%20am%20interested%20in%20the%20Shimla%20New%20Year%202026"
-  target="_blank"
-  rel="noopener noreferrer"
-  style={{
-    margin: "1rem auto",
-    padding: "0.7rem 1.8rem",
-    borderRadius: "9999px",
-    background: "#628141",
-    color: "white",
-    fontWeight: 600,
-    fontSize: "0.95rem",
-    textDecoration: "none",
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-    cursor: "pointer",
-  }}
->
-
-  <span>Contact Us</span>
-</a>
-</div> 
+      {/* Bottom CTA */}
+      <div
+        style={{
+          position: "fixed",
+          insetInline: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          zIndex: 2000,
+        }}
+      >
+        <a
+          href="https://wa.me/919015483181?text=Hi,%20I%20am%20interested%20in%20the%20Shimla%20New%20Year%202026"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            margin: "1rem auto",
+            padding: "0.7rem 1.8rem",
+            borderRadius: "9999px",
+            background: "#628141",
+            color: "white",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
+            cursor: "pointer",
+          }}
+        >
+          <span>Contact Us</span>
+        </a>
+      </div>
     </>
   );
 };

@@ -1,44 +1,52 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { SectionId } from '../constants';
 
+// ✅ HERO-STYLE IMAGE IMPORTS ONLY
+import imageEight from '../assets/Images/imageEight.jpg';
+import imageFourteen from '../assets/Images/imageFourteen.jpg';
+import imageFifteen from '../assets/Images/imageFifteen.jpg';
+import imageSixteen from '../assets/Images/imageSixteen.jpg';
+import imageSeventeen from '../assets/Images/imageSeventeen.jpg';
+import imageEighteen from '../assets/Images/imageEighteen.jpg';
+import imageNineteen from '../assets/Images/imageNineteen.jpg';
+import imageTwenty from '../assets/Images/imageTwenty.jpg';
+import imageTwentyOne from '../assets/Images/imageTwentyOne.jpg';
+import imageTwentyTwo from '../assets/Images/imageTwentyTwo.jpg';
+import imageTwentyThree from '../assets/Images/imageTwentyThree.jpg';
+import imageTwentyFive from '../assets/Images/imageTwentyFive.jpg';
+import imageTwentySix from '../assets/Images/imageTwentySix.jpg';
+import imageTwentySeven from '../assets/Images/imageTwentySeven.jpg';
+import imageTwentyEight from '../assets/Images/imageTwentyEight.jpg';
+import imageThirty from '../assets/Images/imageThirty.jpg';
+import imageThirtyOne from '../assets/Images/imageThirtyOne.jpg';
+import imageThirtyTwo from '../assets/Images/imageThirtyTwo.jpg';
+import imageThirtyThree from '../assets/Images/imageThirtyThree.jpg';
+import imageThirtyFour from '../assets/Images/imageThirtyFour.jpg';
+import imageThirtyFive from '../assets/Images/imageThirtyFive.jpg';
+import imageThirtySix from '../assets/Images/imageThirtySix.jpg';
+import imageThirtySeven from '../assets/Images/imageThirtySeven.jpg';
+import imageFourty from '../assets/Images/imageFourty.jpg';
+import imageFourtyOne from '../assets/Images/imageFourtyOne.jpg';
+import imageFourtyTwo from '../assets/Images/imageFourtyTwo.jpg';
+import imageFourtyThree from '../assets/Images/imageFourtyThree.jpg';
+import imageFourtyFour from '../assets/Images/imageFourtyFour.jpg';
+import imageFourtyFive from '../assets/Images/imageFourtyFive.jpg';
+
+// ✅ VIDEO IMPORTS
+import videoOne from '../assets/Videos/TJS_VideoOne.mp4';
+import videoFour from '../assets/Videos/TJS_VideoFour.mp4';
+import videoFive from '../assets/Videos/TJS_VideoFive.mp4';
+
 const images = [
-  '/Images/imageEight.jpg',
-  '/Images/imageFourteen.jpg',
-  '/Images/imageFifteen.jpg',
-  '/Images/imageSixteen.jpg',
-  '/Images/imageSeventeen.jpg',
-  '/Images/imageEighteen.jpg',
-  '/Images/imageNineteen.jpg',
-  '/Images/imageTwenty.jpg',
-  '/Images/imageTwentyOne.jpg',
-  '/Images/imageTwentyTwo.jpg',
-  '/Images/imageTwentyThree.jpg',
-  '/Images/imageTwentyFive.jpg',
-  '/Images/imageTwentySix.jpg',
-  '/Images/imageTwentySeven.jpg',
-  '/Images/imageTwentyEight.jpg',
-  '/Images/imageThirty.jpg',
-  '/Images/imageThirtyOne.jpg',
-  '/Images/imageThirtyTwo.jpg',
-  '/Images/imageThirtyThree.jpg',
-  '/Images/imageThirtyFour.jpg',
-  '/Images/imageThirtyFive.jpg',
-  '/Images/imageThirtySix.jpg',
-  '/Images/imageThirtySeven.jpg',
-  '/Images/imageFourty.jpg',
-  '/Images/imageFourtyOne.jpg',
-  '/Images/imageFourtyTwo.jpg',
-  '/Images/imageFourtyThree.jpg',
-  '/Images/imageFourtyFour.jpg',
-  '/Images/imageFourtyFive.jpg',
+  imageEight, imageFourteen, imageFifteen, imageSixteen, imageSeventeen,
+  imageEighteen, imageNineteen, imageTwenty, imageTwentyOne, imageTwentyTwo,
+  imageTwentyThree, imageTwentyFive, imageTwentySix, imageTwentySeven, imageTwentyEight,
+  imageThirty, imageThirtyOne, imageThirtyTwo, imageThirtyThree, imageThirtyFour,
+  imageThirtyFive, imageThirtySix, imageThirtySeven, imageFourty,
+  imageFourtyOne, imageFourtyTwo, imageFourtyThree, imageFourtyFour, imageFourtyFive,
 ];
 
-const videos = [
-  '/Videos/TJS_VideoOne.mp4',
-  '/Videos/TJS_VideoFour.mp4',
-  '/Videos/TJS_VideoFive.mp4',
-];
+const videos = [videoOne, videoFour, videoFive];
 
 export const Gallery = () => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
@@ -152,7 +160,7 @@ export const Gallery = () => {
             <h2 className="travel-heading" style={styles.title}>
               Captured Moments in the Wild
             </h2>
-            <p style={styles.subText}>
+            <p style={styles.subText} className="travel-heading" >
               A glimpse of cabins, bonfire nights, forest trails, and starlit
               skies that shape every stay at The Jungle Story.
             </p>
@@ -218,3 +226,6 @@ export const Gallery = () => {
     </section>
   );
 };
+
+export default Gallery;
+   

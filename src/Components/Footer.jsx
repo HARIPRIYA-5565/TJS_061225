@@ -3,9 +3,14 @@ import { Instagram, Facebook, Twitter } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { SectionId } from '../constants'; // Import SectionId for consistency
 
+// Import logo image explicitly
+import TJSLogo from '../assets/Images/TJS_logo.png';
+
 export const Footer = () => {
   const [hoveredLink, setHoveredLink] = useState(null);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  );
 
   const forestGreen = "#628141";
 
@@ -83,14 +88,14 @@ export const Footer = () => {
     },
   };
 
-  // ✅ SAME navItems structure as Header for consistency
+  // SAME navItems structure as Header for consistency
   const navItems = [
     { label: "About", path: "/#about" },
     { label: "Gallery", path: "/gallery" },
-    { label: "Reviews", path: `/#${SectionId.TESTIMONIALS}` }, // 🟢 Smooth scroll to testimonials (matches Header)
+    { label: "Reviews", path: `/#${SectionId.TESTIMONIALS}` }, //  Smooth scroll to testimonials (matches Header)
   ];
 
-  // 🟢 Handle navigation click (same logic as Header)
+  //  Handle navigation click (same logic as Header)
   const handleNavClick = (e, item, index) => {
     // If it's a hash link (in-page navigation), handle smooth scroll
     if (item.path.startsWith("/#")) {
@@ -132,7 +137,7 @@ export const Footer = () => {
           >
             <div>
               <img
-                src="/Images/TJS_logo.png"
+                src={TJSLogo}
                 alt="The Jungle Story Logo"
                 style={{
                   height: windowWidth < 640 ? "200px" : "200px",
@@ -141,7 +146,7 @@ export const Footer = () => {
               />
             </div>
 
-            <p style={styles.paragraph}>
+            <p style={styles.paragraph} className='travel-heading'>
               A hidden eco-luxury retreat where forest trails, starlit skies,
               and quiet mornings weave into unforgettable stories.
             </p>
@@ -152,25 +157,24 @@ export const Footer = () => {
                 style={styles.socialIcon(hoveredLink === "instagram")}
                 onMouseEnter={() => setHoveredLink("instagram")}
                 onMouseLeave={() => setHoveredLink(null)}
+                 onClick={() => {
+                 window.open('https://www.instagram.com/thejunglestory_by_headquarter/', '_blank', 'noopener,noreferrer');
+                  }}
+
               />
               <Facebook
                 size={20}
                 style={styles.socialIcon(hoveredLink === "facebook")}
                 onMouseEnter={() => setHoveredLink("facebook")}
                 onMouseLeave={() => setHoveredLink(null)}
-              />
-              <Twitter
-                size={20}
-                style={styles.socialIcon(hoveredLink === "twitter")}
-                onMouseEnter={() => setHoveredLink("twitter")}
-                onMouseLeave={() => setHoveredLink(null)}
+                   onClick={() => window.open('https://www.facebook.com/TheJungleStoryByHeadquarter/', '_blank', 'noopener,noreferrer')}
               />
             </div>
           </div>
 
-          {/* ✅ Header-style Navigation with React Router Links */}
+          
           <div>
-            <h4 style={styles.sectionTitle}>Navigate</h4>
+            <h4 style={styles.sectionTitle} className='travel-heading'>Navigate</h4>
             <ul
               style={{
                 listStyle: "none",
@@ -184,6 +188,7 @@ export const Footer = () => {
               {navItems.map((item, index) => (
                 <li key={item.label}>
                   <Link
+                   className='travel-heading'
                     to={item.path}
                     style={styles.link(hoveredLink === index)}
                     onClick={(e) => handleNavClick(e, item, index)}
@@ -207,4 +212,4 @@ export const Footer = () => {
   );
 };
 
- 
+export default Footer;

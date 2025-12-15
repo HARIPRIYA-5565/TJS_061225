@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { SectionId } from '../constants';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
+// Import all required images explicitly
+import imageFourtyThree from '../assets/Images/imageFourtyThree.jpg';
+import imageEighteen from '../assets/Images/imageEighteen.jpg';
+
 export const Contact = () => {
   const cardRef = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -55,7 +59,7 @@ export const Contact = () => {
     section: {
       padding: '5rem 0',
       position: 'relative',
-      backgroundImage: `url('/Images/imageFourtyThree.jpg')`,
+      backgroundImage: `url(${imageFourtyThree})`, // Fixed background image
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -181,7 +185,7 @@ export const Contact = () => {
           {/* Left: image */}
           <div style={styles.imageWrapper}>
             <img
-              src="/Images/imageEighteen.jpg"
+              src={imageEighteen}
               alt="Pathway to The Jungle Story"
               style={styles.image}
             />
@@ -231,10 +235,11 @@ export const Contact = () => {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </section>
   );
 };
+
+export default Contact;

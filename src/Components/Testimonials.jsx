@@ -1,9 +1,9 @@
-
-
-
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SectionId } from '../constants';
 import { Star, Quote } from 'lucide-react';
+
+// Import required background image explicitly
+import imageFive from '../assets/Images/imageFive.jpg';
 
 const testimonials = [
   {
@@ -46,7 +46,7 @@ export const Testimonials = () => {
       padding: '6rem 0',
       position: 'relative',
       margin: '1rem',
-      backgroundImage: `url(${process.env.PUBLIC_URL}/Images/imageFive.jpg)`,
+      backgroundImage: `url(${imageFive})`, // Fixed background image
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
@@ -56,9 +56,8 @@ export const Testimonials = () => {
     overlay: {
       position: 'absolute',
       inset: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.55)', // more translucent
-  backdropFilter: 'blur(8px)', // keeps the blur effect
-    
+      backgroundColor: 'rgba(255, 255, 255, 0.55)', // more translucent
+      backdropFilter: 'blur(8px)', // keeps the blur effect
       zIndex: 1,
     },
     container: {
@@ -208,7 +207,7 @@ export const Testimonials = () => {
           <h2 className="travel-heading" style={styles.title}>
             Stories from the Wild
           </h2>
-          <p style={styles.subtitle}>What our guests say about their stay.</p>
+          <p style={styles.subtitle} className='travel-heading'>What our guests say about their stay.</p>
         </div>
 
         <div
@@ -253,3 +252,5 @@ export const Testimonials = () => {
     </section>
   );
 };
+
+export default Testimonials;

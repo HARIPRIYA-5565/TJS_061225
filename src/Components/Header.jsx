@@ -1,16 +1,14 @@
-
-
-// Header.jsx
 import React, { useState, useEffect } from "react";
 import { Leaf, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthModal from "./AuthModal";
-import { SectionId } from '../constants'; // Import SectionId
+import { SectionId } from "../constants";
 
 const navItems = [
   { label: "About", path: "/#about" },
+  { label: "Rooms", path: "/rooms" },
   { label: "Gallery", path: "/gallery" },
-  { label: "Reviews", path: `/#${SectionId.TESTIMONIALS}` }, // Smooth scroll to testimonials
+  { label: "Reviews", path: `/#${SectionId.TESTIMONIALS}` },
 ];
 
 export const Header = () => {
@@ -19,7 +17,9 @@ export const Header = () => {
   const [hoveredNav, setHoveredNav] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -34,24 +34,37 @@ export const Header = () => {
     };
   }, []);
 
-  // Smooth scroll function
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      // Account for fixed header height (approx 100px)
       const headerHeight = 100;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - headerHeight;
-
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
       });
     }
-    // Close mobile menu after click
     setMenuOpen(false);
   };
 
+  const handleNavClick = (e, item, index) => {
+    if (item.path.startsWith("/#")) {
+      e.preventDefault();
+      const sectionId = item.path.replace("/#", "");
+      scrollToSection(sectionId);
+    }
+    setHoveredNav(index);
+    setMenuOpen(false);
+  };
+
+  // Colors
+  const primaryColor = "#2e3a21";
+  const primaryHover = "#242b19";
+  const bgColor = "#fdf2f6";
+  const textColor = "#2e3a21";
+
+  // ✅ WIDER HEADER - NO TEXT WRAPPING
   const headerOuter = {
     position: "fixed",
     top: "0",
@@ -68,10 +81,10 @@ export const Header = () => {
 
   const headerInner = {
     width: "100%",
-    maxWidth: "1120px",
-    background: "#fdf2f6",
+    maxWidth: "1400px", // ✅ INCREASED from 1120px → 1400px
+    background: bgColor,
     borderRadius: "999px",
-    padding: windowWidth < 640 ? "0.5rem 1rem" : "0.75rem 1.4rem",
+    padding: windowWidth < 640 ? "0.5rem 2rem" : "0.75rem 2.5rem", // ✅ MORE padding
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -82,56 +95,55 @@ export const Header = () => {
   const nav = {
     display: windowWidth < 640 ? (menuOpen ? "flex" : "none") : "flex",
     flexDirection: windowWidth < 640 ? "column" : "row",
-    gap: windowWidth < 640 ? "1rem" : "1.75rem",
+    gap: windowWidth < 640 ? "1.5rem" : "2.5rem", // ✅ INCREASED gap
     alignItems: "center",
-    fontSize: "0.95rem",
+    fontSize: "1rem", // ✅ SLIGHTLY larger font
     position: windowWidth < 640 ? "absolute" : "static",
     top: windowWidth < 640 ? "100%" : "auto",
     right: windowWidth < 640 ? "0" : "auto",
     background: windowWidth < 640 ? "white" : "transparent",
     borderRadius: windowWidth < 640 ? "16px" : "0",
-    padding: windowWidth < 640 ? "1rem 1.5rem" : "0",
-    boxShadow:
-      windowWidth < 640 && menuOpen ? "0 8px 20px rgba(0,0,0,0.15)" : "none",
+    padding: windowWidth < 640 ? "1.5rem 2rem" : "0", // ✅ MORE mobile padding
+    boxShadow: windowWidth < 640 && menuOpen ? "0 8px 20px rgba(0,0,0,0.15)" : "none",
+    minWidth: windowWidth < 640 ? "auto" : "500px", // ✅ MIN WIDTH for desktop nav
   };
 
   const navItem = (active) => ({
     textDecoration: "none",
-    color: active ? "white" : "#628141",
-    fontWeight: 500,
-    padding: "0.35rem 0.9rem",
+    color: active ? "white" : textColor,
+    fontWeight: 600, // ✅ BOLDER
+    padding: "0.5rem 1.2rem", // ✅ MORE padding
     borderRadius: "999px",
-    background: active ? "#628141" : "transparent",
+    background: active ? primaryColor : "transparent",
     transition: "all 0.2s ease",
     width: windowWidth < 640 ? "100%" : "auto",
     textAlign: windowWidth < 640 ? "center" : "left",
     cursor: "pointer",
+    border: `2px solid transparent`,
+    whiteSpace: "nowrap", // ✅ PREVENTS TEXT WRAPPING
   });
 
   const cta = {
-    padding: "0.6rem 1.4rem",
+    padding: "0.85rem 2.2rem", // ✅ LARGER CTA
     borderRadius: "999px",
-    background: hoverCTA ? "#628141" : "#628130",
+    background: hoverCTA ? primaryHover : primaryColor,
     color: "white",
-    fontWeight: 600,
+    fontWeight: 700,
+    fontSize: "1rem",
     border: "none",
     cursor: "pointer",
-    transition: "background 0.2s ease, transform 0.2s ease",
-    transform: hoverCTA ? "translateY(-1px)" : "translateY(0)",
-    marginLeft: windowWidth < 640 ? "0" : "1rem",
-    marginTop: windowWidth < 640 ? "0.5rem" : "0",
+    transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+    transform: hoverCTA ? "translateY(-2px) scale(1.02)" : "translateY(0) scale(1)",
+    boxShadow: hoverCTA
+      ? `0 12px 30px rgba(46,58,33,0.45)`
+      : `0 6px 20px rgba(46,58,33,0.25)`,
+    marginLeft: windowWidth < 640 ? "0" : "1.5rem", // ✅ MORE space
+    marginTop: windowWidth < 640 ? "0.75rem" : "0",
     width: windowWidth < 640 ? "100%" : "auto",
-  };
-
-  // Handle navigation click
-  const handleNavClick = (e, item, index) => {
-    // If it's a hash link (in-page navigation), handle smooth scroll
-    if (item.path.startsWith("/#")) {
-      e.preventDefault();
-      const sectionId = item.path.replace("/#", "");
-      scrollToSection(sectionId);
-    }
-    setHoveredNav(index);
+    letterSpacing: "0.025em",
+    position: "relative",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
   };
 
   return (
@@ -145,20 +157,22 @@ export const Header = () => {
               textDecoration: "none",
               display: "flex",
               alignItems: "center",
-              gap: "0.35rem",
+              gap: "0.5rem",
+              flexShrink: 0, // ✅ Prevent logo shrinking
             }}
           >
             <span
               className="travel-heading"
               style={{
                 fontWeight: 700,
-                fontSize: windowWidth < 640 ? "15px" : "30px",
+                fontSize: windowWidth < 640 ? "16px" : "32px", // ✅ SLIGHTLY larger
                 letterSpacing: "0.03em",
-                color: "#628141",
+                color: primaryColor,
                 textShadow:
                   windowWidth < 640
                     ? "0px 3px 0 #f7c6b5, 0px 3px 0 #f4a88f"
-                    : "0px 3px 0 #f7c6b5, 0px 3px 0 #f4a88f ",
+                    : "0px 3px 0 #f7c6b5, 0px 3px 0 #f4a88f",
+                whiteSpace: "nowrap",
               }}
             >
               The Jungle Story By Headquarter
@@ -168,15 +182,18 @@ export const Header = () => {
           {/* Hamburger menu for mobile */}
           {windowWidth < 640 && (
             <button
+              className="travel-heading"
               onClick={() => setMenuOpen(!menuOpen)}
               style={{
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                padding: "0.25rem",
+                padding: "0.5rem",
+                color: primaryColor,
+                flexShrink: 0,
               }}
             >
-              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+              {menuOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
           )}
 
@@ -184,6 +201,7 @@ export const Header = () => {
           <nav style={nav}>
             {navItems.map((item, index) => (
               <Link
+                className="travel-heading"
                 key={item.label}
                 to={item.path}
                 style={navItem(hoveredNav === index)}
@@ -195,9 +213,10 @@ export const Header = () => {
               </Link>
             ))}
 
-            {/* CTA for mobile inside menu */}
+            {/* Mobile CTA */}
             {windowWidth < 640 && (
               <button
+                className="travel-heading"
                 type="button"
                 style={cta}
                 onClick={() => setShowModal(true)}
@@ -209,9 +228,10 @@ export const Header = () => {
             )}
           </nav>
 
-          {/* CTA for desktop */}
+          {/* Desktop CTA */}
           {windowWidth >= 640 && (
             <button
+              className="travel-heading"
               type="button"
               style={cta}
               onClick={() => setShowModal(true)}
@@ -228,3 +248,5 @@ export const Header = () => {
     </>
   );
 };
+
+export default Header;

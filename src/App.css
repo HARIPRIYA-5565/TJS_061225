@@ -40,7 +40,7 @@
 
 /* App.css or global.css */
 /* Load Caveat font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap'); */
 
 /* Prevent global horizontal scrolling */
 html,
@@ -58,7 +58,9 @@ body {
 
 /* Script-style travel heading */
 .travel-heading {
-  font-family: "Caveat", system-ui, sans-serif;
+  font-family: "Avalon";
+  src: local('Avalon_Bold'),
+  url('./Fonts/Avalon_Bold.otf') format('opentype');
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #b86a32;
