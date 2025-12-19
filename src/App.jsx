@@ -10,6 +10,7 @@ import { Gallery } from './Page/Gallery';
 import RoomsPage from './Components/RoomPage';  // ✅ Add this import
 import "./App.css"; 
 import HeroCarousel from './Components/HeroCarousel';
+import  RoomsAndSuits from './Components/RoomsAndSuits';
 
 const App = () => {
   return (
@@ -23,13 +24,14 @@ const App = () => {
               <HeroEventsLayout />
               <HeroCarousel/>
               <About />
+              <RoomsAndSuits/>
               <Testimonials />
               <Contact />
             </>
           }
         />
         <ReactRouterDOM.Route path="/gallery" element={<Gallery />} />
-        <ReactRouterDOM.Route path="/rooms" element={<RoomsPage />} />  {/* ✅ ROOMS ROUTE ADDED */}
+        <ReactRouterDOM.Route path="/rooms" element={<RoomsPage />} /> 
       </ReactRouterDOM.Routes>
       <Footer />
     </ReactRouterDOM.BrowserRouter>

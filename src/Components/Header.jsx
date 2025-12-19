@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Leaf, Menu, X } from "lucide-react";
+import { X, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthModal from "./AuthModal";
 import { SectionId } from "../constants";
+import TJSLogo from "../assets/Images/TJS_logo.png";
+import headerBg from "../assets/Images/header_bg.png";
 
 const navItems = [
   { label: "About", path: "/#about" },
@@ -21,24 +23,34 @@ export const Header = () => {
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
 
+  // only one sticky tab on the right
+  const [showWhatsApp, setShowWhatsApp] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
-
     const handleResize = () => setWindowWidth(window.innerWidth);
+
+    window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
+
+    // show WhatsApp tab once after 2 seconds
+    const timeoutId = setTimeout(() => {
+      setShowWhatsApp(true);
+    }, 2000);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      clearTimeout(timeoutId);
     };
   }, []);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const headerHeight = 100;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const headerHeight = 70;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - headerHeight;
       window.scrollTo({
         top: offsetPosition,
@@ -58,163 +70,245 @@ export const Header = () => {
     setMenuOpen(false);
   };
 
-  // Colors
   const primaryColor = "#2e3a21";
   const primaryHover = "#242b19";
-  const bgColor = "#fdf2f6";
   const textColor = "#2e3a21";
+  const quickTabColor = "#b18449";
 
-  // ✅ WIDER HEADER - NO TEXT WRAPPING
   const headerOuter = {
     position: "fixed",
-    top: "0",
+    top: 0,
     left: 0,
     right: 0,
-    display: "flex",
-    justifyContent: "center",
-    zIndex: 50,
-    transition: "transform 0.25s ease, opacity 0.25s ease",
-    transform: isScrolled ? "scale(0.98)" : "scale(1)",
-    opacity: isScrolled ? 0.97 : 1,
-    padding: windowWidth < 640 ? "0.5rem" : "1rem",
+    zIndex: 60,
+    backgroundImage: `url(${headerBg})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    boxShadow: isScrolled
+      ? "0 4px 15px rgba(0,0,0,0.18)"
+      : "0 2px 8px rgba(0,0,0,0.12)",
+    transition: "box-shadow 0.25s ease, background 0.25s ease",
   };
 
   const headerInner = {
-    width: "100%",
-    maxWidth: "1400px", // ✅ INCREASED from 1120px → 1400px
-    background: bgColor,
-    borderRadius: "999px",
-    padding: windowWidth < 640 ? "0.5rem 2rem" : "0.75rem 2.5rem", // ✅ MORE padding
+    maxWidth: "1400px",
+    margin: "0 auto",
+    padding: "1rem 2rem",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
-    boxShadow: "0 18px 45px rgba(0,0,0,0.18)",
-    position: "relative",
   };
 
-  const nav = {
-    display: windowWidth < 640 ? (menuOpen ? "flex" : "none") : "flex",
-    flexDirection: windowWidth < 640 ? "column" : "row",
-    gap: windowWidth < 640 ? "1.5rem" : "2.5rem", // ✅ INCREASED gap
+  const leftBlock = {
+    display: "flex",
     alignItems: "center",
-    fontSize: "1rem", // ✅ SLIGHTLY larger font
-    position: windowWidth < 640 ? "absolute" : "static",
-    top: windowWidth < 640 ? "100%" : "auto",
-    right: windowWidth < 640 ? "0" : "auto",
-    background: windowWidth < 640 ? "white" : "transparent",
-    borderRadius: windowWidth < 640 ? "16px" : "0",
-    padding: windowWidth < 640 ? "1.5rem 2rem" : "0", // ✅ MORE mobile padding
-    boxShadow: windowWidth < 640 && menuOpen ? "0 8px 20px rgba(0,0,0,0.15)" : "none",
-    minWidth: windowWidth < 640 ? "auto" : "500px", // ✅ MIN WIDTH for desktop nav
+    gap: "0.75rem",
+    flexShrink: 0,
   };
 
-  const navItem = (active) => ({
-    textDecoration: "none",
-    color: active ? "white" : textColor,
-    fontWeight: 600, // ✅ BOLDER
-    padding: "0.5rem 1.2rem", // ✅ MORE padding
-    borderRadius: "999px",
-    background: active ? primaryColor : "transparent",
-    transition: "all 0.2s ease",
-    width: windowWidth < 640 ? "100%" : "auto",
-    textAlign: windowWidth < 640 ? "center" : "left",
-    cursor: "pointer",
-    border: `2px solid transparent`,
-    whiteSpace: "nowrap", // ✅ PREVENTS TEXT WRAPPING
-  });
+  const centerBlock = {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "3rem",
+    fontSize: "0.85rem",
+    color: textColor,
+  };
 
-  const cta = {
-    padding: "0.85rem 2.2rem", // ✅ LARGER CTA
-    borderRadius: "999px",
-    background: hoverCTA ? primaryHover : primaryColor,
-    color: "white",
-    fontWeight: 700,
-    fontSize: "1rem",
-    border: "none",
-    cursor: "pointer",
-    transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
-    transform: hoverCTA ? "translateY(-2px) scale(1.02)" : "translateY(0) scale(1)",
-    boxShadow: hoverCTA
-      ? `0 12px 30px rgba(46,58,33,0.45)`
-      : `0 6px 20px rgba(46,58,33,0.25)`,
-    marginLeft: windowWidth < 640 ? "0" : "1.5rem", // ✅ MORE space
-    marginTop: windowWidth < 640 ? "0.75rem" : "0",
-    width: windowWidth < 640 ? "100%" : "auto",
-    letterSpacing: "0.025em",
-    position: "relative",
-    overflow: "hidden",
+  const centerItemLabel = {
+    display: "block",
+    fontSize: "0.78rem",
+    textTransform: "uppercase",
+    letterSpacing: "0.12em",
+    color: "#777777",
+  };
+
+  const centerItemValue = {
+    fontWeight: 600,
+    color: textColor,
     whiteSpace: "nowrap",
   };
+
+  const rightBlock = {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    flexShrink: 0,
+  };
+
+  const cta = {
+    padding: "0.45rem 1.2rem",
+    borderRadius: "20px",
+    background: hoverCTA ? primaryHover : primaryColor,
+    color: "white",
+    fontWeight: 600,
+    fontSize: "0.85rem",
+    border: "none",
+    cursor: "pointer",
+    transition: "background 0.2s ease, transform 0.2s ease",
+    transform: hoverCTA ? "translateY(-1px)" : "translateY(0)",
+    boxShadow: hoverCTA
+      ? "0 6px 16px rgba(0,0,0,0.25)"
+      : "0 3px 10px rgba(0,0,0,0.18)",
+    whiteSpace: "nowrap",
+  };
+
+  const HEADER_HEIGHT = 70;
+
+  const sideMenu = {
+    position: "fixed",
+    top: HEADER_HEIGHT,
+    right: 0,
+    width: windowWidth < 768 ? "75%" : "320px",
+    height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+    background: "#ffffff",
+    boxShadow: "-4px 0 20px rgba(0,0,0,0.2)",
+    transform: menuOpen ? "translateX(0)" : "translateX(100%)",
+    transition: "transform 0.3s ease",
+    zIndex: 70,
+    display: "flex",
+    flexDirection: "column",
+  };
+
+  const sideMenuHeader = {
+    padding: "1rem 1.5rem",
+    borderBottom: "1px solid #e5e5e5",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    fontWeight: 600,
+    fontSize: "0.9rem",
+    color: textColor,
+  };
+
+  const sideMenuList = {
+    flex: 1,
+    overflowY: "auto",
+    padding: "1rem 1.5rem",
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+  };
+
+  const sideMenuItem = (active, hovered) => ({
+    padding: "0.7rem 0.4rem",
+    borderBottom: "1px solid #f0f0f0",
+    fontSize: "0.9rem",
+    fontWeight: active ? 600 : 500,
+    color: hovered || active ? "#ffffff" : "#444444",
+    textDecoration: "none",
+    cursor: "pointer",
+    borderRadius: "4px",
+    background: hovered || active ? quickTabColor : "transparent",
+    transition: "background 0.2s ease, color 0.2s ease",
+  });
 
   return (
     <>
       <header style={headerOuter}>
         <div style={headerInner}>
-          {/* Logo */}
-          <Link
-            to="/"
-            style={{
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              flexShrink: 0, // ✅ Prevent logo shrinking
-            }}
-          >
-            <span
-              className="travel-heading"
-              style={{
-                fontWeight: 700,
-                fontSize: windowWidth < 640 ? "16px" : "32px", // ✅ SLIGHTLY larger
-                letterSpacing: "0.03em",
-                color: primaryColor,
-                textShadow:
-                  windowWidth < 640
-                    ? "0px 3px 0 #f7c6b5, 0px 3px 0 #f4a88f"
-                    : "0px 3px 0 #f7c6b5, 0px 3px 0 #f4a88f",
-                whiteSpace: "nowrap",
-              }}
-            >
-              The Jungle Story By Headquarter
-            </span>
+          {/* LEFT: Logo image + text */}
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <div style={leftBlock}>
+              <div
+                style={{
+                  width: 80,
+                  height: 60,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={TJSLogo}
+                  alt="The Jungle Story Logo"
+                  style={{
+                    objectFit: "contain",
+                    display: "block",
+                    width: "100px",
+                    height: "100px",
+                  }}
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span
+                  className="travel-heading"
+                  style={{
+                    fontWeight: 700,
+                    fontSize: "0.95rem",
+                    letterSpacing: "0.10em",
+                    color: primaryColor,
+                    textTransform: "uppercase",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  THE JUNGLE STORY
+                </span>
+                <span
+                  className="travel-heading"
+                  style={{
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "#777777",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  BY HEADQUARTER
+                </span>
+                <span
+                  className="travel-heading"
+                  style={{
+                    marginTop: "0.15rem",
+                    fontSize: "0.65rem",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "#999999",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  A LUXURY FOREST RETREAT
+                </span>
+              </div>
+            </div>
           </Link>
 
-          {/* Hamburger menu for mobile */}
-          {windowWidth < 640 && (
+          {/* CENTER: Reservation / Email (desktop only) */}
+          {windowWidth > 768 && (
+            <div style={centerBlock}>
+              <div>
+                <span style={centerItemLabel}>Reservation</span>
+                <span style={centerItemValue}>+91-9015483181</span>
+              </div>
+              <div>
+                <span style={centerItemLabel}>Email</span>
+                <span style={centerItemValue}>
+                  reservations@thejunglestory.com
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* RIGHT: burger + CTA */}
+          <div style={rightBlock}>
             <button
-              className="travel-heading"
-              onClick={() => setMenuOpen(!menuOpen)}
+              type="button"
+              onClick={() => setMenuOpen(true)}
               style={{
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                padding: "0.5rem",
+                padding: "0.25rem",
                 color: primaryColor,
-                flexShrink: 0,
               }}
             >
-              {menuOpen ? <X size={26} /> : <Menu size={26} />}
+              <Menu size={22} />
             </button>
-          )}
 
-          {/* Nav links */}
-          <nav style={nav}>
-            {navItems.map((item, index) => (
-              <Link
-                className="travel-heading"
-                key={item.label}
-                to={item.path}
-                style={navItem(hoveredNav === index)}
-                onClick={(e) => handleNavClick(e, item, index)}
-                onMouseEnter={() => setHoveredNav(index)}
-                onMouseLeave={() => setHoveredNav(null)}
-              >
-                {item.label}
-              </Link>
-            ))}
-
-            {/* Mobile CTA */}
-            {windowWidth < 640 && (
+            {windowWidth > 640 && (
               <button
                 className="travel-heading"
                 type="button"
@@ -226,23 +320,103 @@ export const Header = () => {
                 Contact Us
               </button>
             )}
-          </nav>
+          </div>
+        </div>
+      </header>
 
-          {/* Desktop CTA */}
-          {windowWidth >= 640 && (
+      {/* RIGHT-SIDE VERTICAL MENU BELOW HEADER */}
+      <aside style={sideMenu}>
+        <div style={sideMenuHeader}>
+          <span>Menu</span>
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            <X size={20} color="#777777" />
+          </button>
+        </div>
+
+        <div style={sideMenuList}>
+          {navItems.map((item, index) => {
+            const hovered = hoveredNav === index;
+            return (
+              <Link
+                key={item.label}
+                to={item.path}
+                className="travel-heading"
+                style={sideMenuItem(hovered, hovered)}
+                onClick={(e) => handleNavClick(e, item, index)}
+                onMouseEnter={() => setHoveredNav(index)}
+                onMouseLeave={() => setHoveredNav(null)}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+
+          {windowWidth <= 640 && (
             <button
-              className="travel-heading"
               type="button"
-              style={cta}
-              onClick={() => setShowModal(true)}
-              onMouseEnter={() => setHoverCTA(true)}
-              onMouseLeave={() => setHoverCTA(false)}
+              className="travel-heading"
+              style={{
+                ...sideMenuItem(hoveredNav === -1, hoveredNav === -1),
+                marginTop: "0.9rem",
+                border: "none",
+                textAlign: "left",
+              }}
+              onClick={() => {
+                setMenuOpen(false);
+                setShowModal(true);
+              }}
+              onMouseEnter={() => setHoveredNav(-1)}
+              onMouseLeave={() => setHoveredNav(null)}
             >
-              Contact Us
+              CONTACT US
             </button>
           )}
         </div>
-      </header>
+      </aside>
+
+      {/* WHATSAPP SIDE TAB – RIGHT, appears after 2s and stays */}
+      <div
+        style={{
+          position: "fixed",
+          top: "35%",
+          right: showWhatsApp ? 0 : "-140px",
+          transform: "translateY(-50%)",
+          zIndex: 100,
+          transition: "right 0.4s ease-out",
+        }}
+      >
+        <button
+          type="button"
+          onClick={() =>
+            window.open("https://wa.me/919015483181", "_blank")
+          }
+          style={{
+            writingMode: "vertical-rl",
+            textOrientation: "mixed",
+            background: "#628141",
+            color: "#ffffff",
+            border: "none",
+            padding: "0.75rem 0.4rem",
+            borderRadius: "8px 0 0 8px",
+            fontWeight: 700,
+            fontSize: "0.78rem",
+            letterSpacing: "0.12em",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
+          }}
+        >
+          WHATSAPP
+        </button>
+      </div>
 
       <AuthModal open={showModal} onClose={() => setShowModal(false)} />
     </>
