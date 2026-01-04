@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const appId = process.env.REACT_APP_X_API_ID;
 const appKey = process.env.REACT_APP_X_API_KEY;
@@ -21,24 +21,34 @@ const AuthModal = () => {
   const [hoverCTA, setHoverCTA] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
 
-  // local open/close for auto popup
-  const [open, setOpen] = useState(false);
+  // FIRST TIME -> SHOW IMMEDIATELY
+  const [open, setOpen] = useState(true);
 
-  // show 3s, hide 3s, loop
+  // Track if modal was closed once
+  const closedOnceRef = useRef(false);
+
+  // 📌 AFTER FIRST CLOSE -> SHOW AGAIN AFTER 20 SECONDS
   useEffect(() => {
-    const cycle = () => {
-      setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-      }, 3000);
-    };
+    if (!open && !closedOnceRef.current) {
+      closedOnceRef.current = true;
+      const timer = setTimeout(() => {
+        setOpen(true); // reopen after 20 seconds
+      }, 20000);
 
-    cycle(); // start immediately
-    const intervalId = setInterval(cycle, 6000);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  // 📌 SECOND CLOSE -> DO NOT SHOW AGAIN
+  const handleClose = () => {
+    if (closedOnceRef.current) {
+      setOpen(false); // stop showing forever (until reload)
+      return;
+    }
+    setOpen(false);
+  };
 
+  // ❌ If closed, don't render
   if (!open) return null;
 
   const handleChange = (e) => {
@@ -68,13 +78,8 @@ const AuthModal = () => {
       setLoading(false);
       return;
     }
-    if (!formData.age) {
-      setMessage("Please enter age.");
-      setLoading(false);
-      return;
-    }
-    if (!/^\d+$/.test(formData.age)) {
-      setMessage("Age must be a valid number.");
+    if (!formData.age || !/^\d+$/.test(formData.age)) {
+      setMessage("Please enter a valid age.");
       setLoading(false);
       return;
     }
@@ -87,14 +92,7 @@ const AuthModal = () => {
     const realAppKey = appKey || runtime.API_KEY || "";
 
     if (!realAppId || !realAppKey) {
-      console.error("Missing API_ID or API_KEY (appId/appKey)", {
-        appId,
-        appKey,
-        runtime,
-      });
-      setMessage(
-        "Missing API credentials in the frontend. Contact admin or rebuild with correct env."
-      );
+      setMessage("Missing API credentials. Contact admin.");
       setLoading(false);
       return;
     }
@@ -123,15 +121,9 @@ const AuthModal = () => {
           city: "",
         });
       } else {
-        setMessage(
-          data.message ||
-            `Error ${response.status}: ${
-              response.statusText || "Something went wrong"
-            }`
-        );
+        setMessage(data.message || "Something went wrong");
       }
     } catch (error) {
-      console.error("Network error while submitting visitor:", error);
       setMessage("Network error! Please try again.");
     } finally {
       setLoading(false);
@@ -250,12 +242,8 @@ const AuthModal = () => {
           <p style={{ marginTop: "1rem", color: "#14532d" }}>{message}</p>
         )}
 
-        {/* optional manual close, it will still reopen on next cycle */}
-        <button
-          onClick={() => setOpen(false)}
-          style={closeBtn}
-          type="button"
-        >
+        {/* CLOSE BUTTON WITH NEW LOGIC */}
+        <button onClick={handleClose} style={closeBtn} type="button">
           ✕
         </button>
       </div>
@@ -263,7 +251,8 @@ const AuthModal = () => {
   );
 };
 
-// bottom-right container (no full-screen backdrop)
+/* ------------------ STYLES ------------------ */
+
 const bottomWrapper = {
   position: "fixed",
   right: "16px",
@@ -271,7 +260,6 @@ const bottomWrapper = {
   zIndex: 9999,
 };
 
-// Styles
 const modalBox = {
   width: "320px",
   background: "white",

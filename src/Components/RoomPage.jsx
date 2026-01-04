@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import roomDeluxe from "../assets/Images/DeluxeRoom.jpeg";
+import roomPremium from "../assets/Images/PremiumRoom.jpeg";
+import roomCottage from "../assets/Images/CottageRoom.jpeg";
+import roomFamily from "../assets/Images/imageFifteen.jpg";
+import roomDuplex from "../assets/Images/DuplexCottageRoomFirstFloor.jpeg";
 
 const RoomsPage = () => {
   const [selectedRoom, setSelectedRoom] = useState('deluxe');
@@ -21,9 +26,10 @@ const RoomsPage = () => {
     {
       id: 'deluxe',
       name: 'Deluxe Room',
-      view: 'Mountain View',
-      beds: '1 King Bed',
-      basePrice: 5999,
+      image: roomDeluxe,
+      // view: 'Mountain View',
+      // beds: '1 King Bed',
+      basePrice: 'Starting ₹6,000',
       amenities: [
         'Daily Housekeeping', 'Free Wi-Fi', 'Bathroom', 'Air Conditioning',
         'TV', 'Woollen Blanket', 'Room Service', 'Caretaker', 'Power backup', 'Closet'
@@ -32,8 +38,9 @@ const RoomsPage = () => {
     {
       id: 'premium',
       name: 'Premium Room',
-      view: 'Mountain View',
-      beds: '1 King Bed',
+      image: roomPremium,
+      // view: 'Mountain View',
+      // beds: '1 King Bed',
       basePrice: 6999,
       amenities: [
         'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
@@ -42,9 +49,10 @@ const RoomsPage = () => {
     },
     {
       id: 'cottage-deluxe',
-      name: 'Cottage Deluxe',
-      view: 'River View',
-      beds: '1 King Bed',
+      name: 'Cottage ',
+      image: roomCottage,
+      // view: 'River View',
+      // beds: '1 King Bed',
       basePrice: 7999,
       amenities: [
         'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
@@ -54,8 +62,8 @@ const RoomsPage = () => {
     {
       id: 'family-suite',
       name: 'Family Suite Room',
-      view: 'Mountain View',
-      beds: '2 Double Beds',
+      // view: 'Mountain View',
+      // beds: '2 Double Beds',
       basePrice: 8999,
       amenities: [
         'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
@@ -64,9 +72,10 @@ const RoomsPage = () => {
     },
     {
       id: 'cottage-duplex',
-      name: 'Cottage Duplex Family Suite',
-      view: 'River View',
-      beds: '1 King Bed',
+      name: 'Cottage Duplex ',
+      image: roomDuplex,
+      // view: 'River View',
+      // beds: '1 King Bed',
       basePrice: 9999,
       amenities: [
         'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',

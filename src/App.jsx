@@ -11,6 +11,7 @@ import RoomsPage from './Components/RoomPage';  // ✅ Add this import
 import "./App.css"; 
 import HeroCarousel from './Components/HeroCarousel';
 import  RoomsAndSuits from './Components/RoomsAndSuits';
+import MenuFlipBook from './Components/MenuFlipBook';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
               <HeroCarousel/>
               <About />
               <RoomsAndSuits/>
+              <MenuFlipBook/>
               <Testimonials />
               <Contact />
             </>
