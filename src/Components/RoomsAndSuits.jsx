@@ -2,58 +2,56 @@ import React, { useState, useEffect, useRef } from "react";
 import { ArrowRight, BedDouble, Bath, Mountain } from "lucide-react";
 import { SectionId } from "../constants";
 
-import room1 from "../assets/Images/imageFive.jpg";
-import room2 from "../assets/Images/imageFour.jpg";
-import room3 from "../assets/Images/imageFourteen.jpg";
-import room4 from "../assets/Images/imageFifteen.jpg";
-import room5 from "../assets/Images/imageFourty.jpg";
-import headerBg from "../assets/Images/header_bg_green.jpeg";
-
+import roomDeluxe from "../assets/Images/DeluxeRoom.jpeg";
+import roomPremium from "../assets/Images/PremiumRoom.jpeg";
+import roomCottage from "../assets/Images/CottageRoom.jpeg";
+import roomFamilySuite from "../assets/Images/imageFifteen.jpg";
+import roomCottageDuplex from "../assets/Images/DuplexCottageRoomFirstFloor.jpeg"
 const ROOMS = [
   {
-    id: 1,
-    title: "Standard Room with Private Walled Balcony",
-    subtitle: "Starting ₹5500 / Night",
-    image: room1,
-    size: "260 sq.ft",
-    bed: "Queen Bed",
-    view: "Cozy forest-side balcony",
+    id: "deluxe",
+    title: "Deluxe Room ",
+    subtitle: "Starting ₹6,000 ",
+    image: roomDeluxe,
+    // size: "~260 sq.ft",
+    // bed: "1 King Bed",
+    // view: "Cozy mountain‑facing room",
   },
   {
-    id: 2,
-    title: "Superior Room with Forest View Balcony",
-    subtitle: "Starting ₹6000 / Night",
-    image: room2,
-    size: "280 sq.ft",
-    bed: "King Bed",
-    view: "Direct forest & valley view",
+    id: "premium",
+    title: "Premium Room ",
+    subtitle: "Starting ₹7,500",
+    image: roomPremium,
+    // size: "~280 sq.ft",
+    // bed: "1 King Bed",
+    // view: "Upgraded mountain view room",
   },
   {
-    id: 3,
-    title: "Premium Room with Valley View Balcony",
-    subtitle: "Starting ₹6500 / Night",
-    image: room3,
-    size: "300 sq.ft",
-    bed: "King Bed + Lounge",
-    view: "Sweeping valley panorama",
+    id: "cottage-deluxe",
+    title: "Cottage Deluxe ",
+    subtitle: "Starting ₹10,000",
+    image: roomCottage,
+    // size: "~300 sq.ft",
+    // bed: "1 King Bed",
+    // view: "Riverside cottage with views",
   },
   {
-    id: 4,
-    title: "Luxury Room with Valley View Balcony",
-    subtitle: "Starting ₹7000 / Night",
-    image: room4,
-    size: "320 sq.ft",
-    bed: "King Bed",
-    view: "Sunrise over cedar hills",
+    id: "family-suite",
+    title: "Family Suite Room ",
+    subtitle: "Starting ₹8,999 ",
+    image: roomFamilySuite,
+    // size: "~420 sq.ft",
+    // bed: "2 Double Beds",
+    // view: "Spacious family‑friendly suite",
   },
   {
-    id: 5,
-    title: "Family Suite with Two Connected Rooms",
-    subtitle: "Starting ₹8600 / Night",
-    image: room5,
-    size: "420 sq.ft",
-    bed: "2 King Beds",
-    view: "Family‑friendly forest suite",
+    id: "cottage-duplex",
+    title: "Duplex Cottage ",
+    subtitle: "Starting ₹12,000",
+    image: roomCottageDuplex,
+    // size: "~450 sq.ft",
+    // bed: "1 King Bed",
+    // view: "Duplex river‑view family cottage",
   },
 ];
 
@@ -69,7 +67,7 @@ const RoomsAndSuites = () => {
   const containerRef = useRef(null);
 
   const isMobile = windowWidth < 768;
-  const PER_SLIDE = 4;
+  const CARDS_PER_ROW = 3;
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -79,22 +77,29 @@ const RoomsAndSuites = () => {
 
   useEffect(() => {
     const id = setInterval(() => {
-      setActiveIndex((prev) => (prev + PER_SLIDE) % ROOMS.length);
-    }, 6000);
+      setActiveIndex((prev) => (prev + 1) % ROOMS.length);
+    }, 5000);
     return () => clearInterval(id);
   }, []);
 
   const goNext = () => {
-    setActiveIndex((prev) => (prev + PER_SLIDE) % ROOMS.length);
+    setActiveIndex((prev) => (prev + 1) % ROOMS.length);
   };
 
   const goPrev = () => {
-    setActiveIndex((prev) => (prev - PER_SLIDE + ROOMS.length) % ROOMS.length);
+    setActiveIndex((prev) => (prev - 1 + ROOMS.length) % ROOMS.length);
   };
 
-  const currentRooms = [];
-  for (let i = 0; i < PER_SLIDE && i < ROOMS.length; i++) {
-    currentRooms.push(ROOMS[(activeIndex + i) % ROOMS.length]);
+  // Top row: 3 cards
+  const topRow = [];
+  for (let i = 0; i < CARDS_PER_ROW; i++) {
+    topRow.push(ROOMS[(activeIndex + i) % ROOMS.length]);
+  }
+
+  // Bottom row: next 3 cards
+  const bottomRow = [];
+  for (let i = 0; i < CARDS_PER_ROW; i++) {
+    bottomRow.push(ROOMS[(activeIndex + CARDS_PER_ROW + i) % ROOMS.length]);
   }
 
   const styles = {
@@ -103,7 +108,6 @@ const RoomsAndSuites = () => {
       display: "flex",
       justifyContent: "center",
       padding: "4rem 0 5rem",
-    //   backgroundImage: `url(${headerBg})`,
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
@@ -111,7 +115,7 @@ const RoomsAndSuites = () => {
     section: {
       position: "relative",
       flex: "0 1 1200px",
-      backgroundColor: "rgba(252,249,244,0.96)",
+      backgroundColor: "#F6E4D1",
       borderRadius: "24px",
       overflow: "hidden",
       boxShadow:
@@ -147,33 +151,28 @@ const RoomsAndSuites = () => {
       position: "relative",
       marginTop: "2rem",
     },
-    grid: {
+    rowGrid: {
       display: "grid",
       gap: "1.25rem",
-      gridTemplateColumns: isMobile ? "1fr" : "repeat(12, 1fr)",
+      gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)",
       gridAutoRows: "minmax(220px, auto)",
+      marginBottom: "2.5rem",
     },
-    cardWrapper: (index) => {
-      if (isMobile) return { gridColumn: "1 / -1" };
-      if (index === 0) return { gridColumn: "1 / span 4" };
-      if (index === 1) return { gridColumn: "5 / span 4" };
-      if (index === 2) return { gridColumn: "9 / span 4" };
-      if (index === 3) return { gridColumn: "1 / span 7" };
-      if (index === 4) return { gridColumn: "8 / span 5" };
-      return { gridColumn: "1 / span 4" };
+    cardWrapper: {
+      width: "100%",
     },
-    card: (primary) => ({
+    card: {
       position: "relative",
       borderRadius: "18px",
       overflow: "hidden",
       minHeight: "220px",
       backgroundColor: "#111827",
       color: "white",
-      boxShadow: primary
-        ? "0 22px 50px rgba(0,0,0,0.4), 0 0 26px rgba(98,129,65,0.5)"
-        : "0 18px 40px rgba(0,0,0,0.32), 0 0 18px rgba(98,129,65,0.35)",
+      boxShadow: "0 18px 40px rgba(0,0,0,0.32), 0 0 18px rgba(98,129,65,0.35)",
       cursor: "pointer",
-    }),
+      width: "100%",
+      height: "100%",
+    },
     cardImage: (hovered) => ({
       width: "100%",
       height: "100%",
@@ -207,7 +206,6 @@ const RoomsAndSuites = () => {
       fontWeight: 600,
       lineHeight: 1.3,
     },
-    // sliding blocks
     cardFront: (hovered) => ({
       position: "absolute",
       left: 0,
@@ -231,6 +229,7 @@ const RoomsAndSuites = () => {
       fontSize: "0.8rem",
       marginTop: "0.7rem",
       color: "#e5e7eb",
+      flexWrap: "wrap",
     },
     infoItem: {
       display: "flex",
@@ -254,10 +253,12 @@ const RoomsAndSuites = () => {
       fontSize: "0.72rem",
       padding: "0.45rem 0.95rem",
       borderRadius: "999px",
-      border: "1px solid rgba(243,244,246,0.8)",
-      background:
-        "linear-gradient(135deg, rgba(15,23,42,0.75), rgba(46,58,33,0.9))",
+      border: "1px solid rgba(255,255,255,0.8)",
+      background: "rgba(255,255,255,0.15)",
+      color: "white",
+      backdropFilter: "blur(10px)",
       cursor: "pointer",
+      transition: "all 0.3s ease",
     },
     priceTag: {
       fontSize: "0.8rem",
@@ -313,13 +314,14 @@ const RoomsAndSuites = () => {
               </button>
             </div>
 
-            <div style={styles.grid}>
-              {currentRooms.map((room, index) => {
+            {/* TOP ROW - 3 Cards */}
+            <div style={styles.rowGrid}>
+              {topRow.map((room, index) => {
                 const hovered = hoveredId === room.id;
                 return (
-                  <div key={room.id} style={styles.cardWrapper(index)}>
+                  <div key={room.id} style={styles.cardWrapper}>
                     <div
-                      style={styles.card(index === 1 || index === 3)}
+                      style={styles.card}
                       onMouseEnter={() => setHoveredId(room.id)}
                       onMouseLeave={() => setHoveredId(null)}
                     >
@@ -331,29 +333,21 @@ const RoomsAndSuites = () => {
                       <div style={styles.cardGradientOverlay} />
 
                       <div style={styles.cardContent}>
-                        {/* FRONT state (non-hover) */}
                         <div style={styles.cardFront(hovered)}>
                           <div style={styles.cardTopText}>
                             {room.subtitle.toUpperCase()}
                           </div>
-                          <h3
-                            style={styles.cardTitle}
-                            className="travel-heading"
-                          >
+                          <h3 style={styles.cardTitle} className="travel-heading">
                             {room.title}
                           </h3>
                         </div>
 
-                        {/* BACK state (hover) */}
                         <div style={styles.cardBack(hovered)}>
                           <div>
                             <div style={styles.cardTopText}>
                               {room.subtitle.toUpperCase()}
                             </div>
-                            <h3
-                              style={styles.cardTitle}
-                              className="travel-heading"
-                            >
+                            <h3 style={styles.cardTitle} className="travel-heading">
                               {room.title}
                             </h3>
 
@@ -375,7 +369,77 @@ const RoomsAndSuites = () => {
 
                           <div style={styles.detailsRow}>
                             <span style={styles.priceTag}>
-                              Taxes extra • Breakfast included
+                              Taxes extra • Breakfast optional
+                            </span>
+                            <button type="button" style={styles.detailsBtn}>
+                              Details
+                              <ArrowRight size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* BOTTOM ROW - 3 Cards */}
+            <div style={styles.rowGrid}>
+              {bottomRow.map((room, index) => {
+                const hovered = hoveredId === room.id;
+                return (
+                  <div key={room.id} style={styles.cardWrapper}>
+                    <div
+                      style={styles.card}
+                      onMouseEnter={() => setHoveredId(room.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                    >
+                      <img
+                        src={room.image}
+                        alt={room.title}
+                        style={styles.cardImage(hovered)}
+                      />
+                      <div style={styles.cardGradientOverlay} />
+
+                      <div style={styles.cardContent}>
+                        <div style={styles.cardFront(hovered)}>
+                          <div style={styles.cardTopText}>
+                            {room.subtitle.toUpperCase()}
+                          </div>
+                          <h3 style={styles.cardTitle} className="travel-heading">
+                            {room.title}
+                          </h3>
+                        </div>
+
+                        <div style={styles.cardBack(hovered)}>
+                          <div>
+                            <div style={styles.cardTopText}>
+                              {room.subtitle.toUpperCase()}
+                            </div>
+                            <h3 style={styles.cardTitle} className="travel-heading">
+                              {room.title}
+                            </h3>
+
+                            <div style={styles.infoRow}>
+                              <div style={styles.infoItem}>
+                                <BedDouble size={15} />
+                                <span>{room.bed}</span>
+                              </div>
+                              <div style={styles.infoItem}>
+                                <Bath size={15} />
+                                <span>{room.size}</span>
+                              </div>
+                              <div style={styles.infoItem}>
+                                <Mountain size={15} />
+                                <span>{room.view}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div style={styles.detailsRow}>
+                            <span style={styles.priceTag}>
+                              Taxes extra • Breakfast optional
                             </span>
                             <button type="button" style={styles.detailsBtn}>
                               Details
