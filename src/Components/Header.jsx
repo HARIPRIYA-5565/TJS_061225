@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { X, Menu } from "lucide-react";
+import { X, Menu, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthModal from "./AuthModal";
 import { SectionId } from "../constants";
 import TJSLogo from "../assets/Images/TJS_logo.png";
 import headerBg from "../assets/Images/header_bg.png";
-
+import { useNavigate } from "react-router-dom";
 const navItems = [
   { label: "About", path: "/#about" },
   { label: "Rooms", path: "/rooms" },
@@ -25,6 +25,7 @@ export const Header = () => {
 
   // only one sticky tab on the right
   const [showWhatsApp, setShowWhatsApp] = useState(false);
+  const [hoverSecondary, setHoverSecondary] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -204,7 +205,17 @@ export const Header = () => {
     background: hovered || active ? quickTabColor : "transparent",
     transition: "background 0.2s ease, color 0.2s ease",
   });
-
+  const styles = {
+    buttonsContainer: {
+      position: "fixed",
+      bottom: 25,
+      left: 25,
+      zIndex: 90
+    }
+  };
+  const green = '#2e3a21';
+  const greenHover = '#242b19';
+  const navigate = useNavigate();
   return (
     <>
       <header style={headerOuter}>
@@ -307,7 +318,35 @@ export const Header = () => {
             >
               <Menu size={22} />
             </button>
-
+            {windowWidth > 640 && (
+              <button
+                className="travel-heading"
+                type="button"
+                style={{
+                  padding: "0.45rem 1.2rem",
+                  borderRadius: "20px",
+                  background: hoverSecondary ? greenHover : green,
+                  color: "white",
+                  fontWeight: 600,
+                  fontSize: "0.85rem",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                  transform: hoverSecondary ? "translateY(-1px)" : "translateY(0)",
+                  boxShadow: hoverSecondary
+                    ? "0 6px 16px rgba(0,0,0,0.25)"
+                    : "0 3px 10px rgba(0,0,0,0.18)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                }}
+                onMouseEnter={() => setHoverSecondary(true)}
+                onMouseLeave={() => setHoverSecondary(false)}
+                onClick={() => navigate("/party-details")}
+              >
+                Party Videos
+              </button>
+            )}
             {windowWidth > 640 && (
               <button
                 className="travel-heading"
@@ -322,6 +361,7 @@ export const Header = () => {
             )}
           </div>
         </div>
+
       </header>
 
       {/* RIGHT-SIDE VERTICAL MENU BELOW HEADER */}

@@ -7,11 +7,12 @@ import { Testimonials } from './Components/Testimonials';
 import { Contact } from './Components/Contact';
 import { Footer } from './Components/Footer';
 import { Gallery } from './Page/Gallery';
-import RoomsPage from './Components/RoomPage';  // ✅ Add this import
-import "./App.css"; 
+import RoomsPage from './Components/RoomPage';
+import "./App.css";
 import HeroCarousel from './Components/HeroCarousel';
-import  RoomsAndSuits from './Components/RoomsAndSuits';
+import RoomsAndSuits from './Components/RoomsAndSuits';
 import MenuFlipBook from './Components/MenuFlipBook';
+import PartyDetails from './Components/PartyDetails';
 
 const App = () => {
   return (
@@ -23,17 +24,18 @@ const App = () => {
           element={
             <>
               {/* <HeroEventsLayout /> */}
-              <HeroCarousel/>
+              <HeroCarousel />
               <About />
-              <RoomsAndSuits/>
-              <MenuFlipBook/>
+              <RoomsAndSuits />
+              <MenuFlipBook />
               <Testimonials />
               <Contact />
             </>
           }
         />
         <ReactRouterDOM.Route path="/gallery" element={<Gallery />} />
-        <ReactRouterDOM.Route path="/rooms" element={<RoomsPage />} /> 
+        <ReactRouterDOM.Route path="/rooms" element={<RoomsPage />} />
+        <ReactRouterDOM.Route path="/party-details" element={<PartyDetails />} />
       </ReactRouterDOM.Routes>
       <Footer />
     </ReactRouterDOM.BrowserRouter>

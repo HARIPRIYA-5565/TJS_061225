@@ -3,7 +3,7 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import { SectionId } from '../constants';
 import AuthModal from './AuthModal';
 import { PhoneIcon, ChatBubbleLeftRightIcon, EnvelopeIcon } from '@heroicons/react/24/solid';
-
+import { useNavigate } from "react-router-dom";
 import imageFourtyOne from '../assets/Images/imageFourtyOne.jpg';
 import imageThirtyFour from '../assets/Images/imageThirtyFour.jpg';
 import imageFour from '../assets/Images/imageFour.jpg';
@@ -18,6 +18,7 @@ export const About = () => {
   const contentRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const [hoverPrimary, setHoverPrimary] = useState(false);
+  const [hoverSecondary, setHoverSecondary] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
@@ -36,7 +37,7 @@ export const About = () => {
   };
 
   const isMobile = windowWidth < 768;
-
+  const navigate = useNavigate();
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
@@ -371,7 +372,6 @@ export const About = () => {
                       </div>
                     </div>
                   </div>
-
                   <div style={styles.buttonsContainer}>
                     <button
                       className="travel-heading"
@@ -429,7 +429,7 @@ export const About = () => {
                       forests and mountain views come together.
                     </p>
                     <p style={styles.highlight}>
-                     Book your forest retreat at The Jungle Story &amp; experience eco‑luxury!
+                      Book your forest retreat at The Jungle Story &amp; experience eco‑luxury!
                     </p>
 
                     <div style={styles.contactRow}>

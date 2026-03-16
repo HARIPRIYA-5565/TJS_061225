@@ -14,6 +14,8 @@ const AuthModal = () => {
     age: "",
     state: "",
     city: "",
+    start_date: "",
+    end_date: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ const AuthModal = () => {
   // Track if modal was closed once
   const closedOnceRef = useRef(false);
 
-  // 📌 AFTER FIRST CLOSE -> SHOW AGAIN AFTER 20 SECONDS
+
   useEffect(() => {
     if (!open && !closedOnceRef.current) {
       closedOnceRef.current = true;
@@ -119,6 +121,8 @@ const AuthModal = () => {
           age: "",
           state: "",
           city: "",
+          start_date: "",
+          end_date: ""
         });
       } else {
         setMessage(data.message || "Something went wrong");
@@ -216,7 +220,39 @@ const AuthModal = () => {
             onFocus={() => setFocusedField("city")}
             onBlur={() => setFocusedField(null)}
           />
+          <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <label style={{ marginBottom: "5px", fontWeight: "600" }}>
+                Start Date
+              </label>
+              <input
+                type="date"
+                name="start_date"
+                style={inputStyle("start_date")}
+                value={formData.start_date}
+                min={new Date().toISOString().split("T")[0]}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("start_date")}
+                onBlur={() => setFocusedField(null)}
+              />
+            </div>
 
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <label style={{ marginBottom: "5px", fontWeight: "300" }}>
+                End Date
+              </label>
+              <input
+                type="date"
+                name="end_date"
+                style={inputStyle("end_date")}
+                value={formData.end_date}
+                min={formData.start_date || new Date().toISOString().split("T")[0]}
+                onChange={handleChange}
+                onFocus={() => setFocusedField("end_date")}
+                onBlur={() => setFocusedField(null)}
+              />
+            </div>
+          </div>
           <button
             style={{
               ...submitBtnBase,
