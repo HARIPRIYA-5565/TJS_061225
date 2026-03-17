@@ -16,7 +16,7 @@ import PartyDetails from './Components/PartyDetails';
 
 const App = () => {
   return (
-    <ReactRouterDOM.BrowserRouter basename="/lander">
+    <ReactRouterDOM.BrowserRouter>
       <Header />
       <ReactRouterDOM.Routes>
         <ReactRouterDOM.Route

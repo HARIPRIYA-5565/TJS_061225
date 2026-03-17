@@ -221,9 +221,10 @@ const AuthModal = () => {
             onBlur={() => setFocusedField(null)}
           />
           <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+            <p style={{ fontSize: 15, color: '#818181' }}>Please enter your preffered trip start & end date </p>
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <label style={{ marginBottom: "5px", fontWeight: "600" }}>
-                Start Date
+              <label style={{ marginBottom: "5px", fontWeight: "500", fontSize: 15, color: '#818181' }}>
+                Check In
               </label>
               <input
                 type="date"
@@ -238,8 +239,8 @@ const AuthModal = () => {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column" }}>
-              <label style={{ marginBottom: "5px", fontWeight: "300" }}>
-                End Date
+              <label style={{ marginBottom: "5px", fontWeight: "500", fontSize: 15, color: '#818181' }}>
+                Check Out
               </label>
               <input
                 type="date"
