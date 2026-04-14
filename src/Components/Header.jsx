@@ -20,12 +20,15 @@ export const Header = () => {
   const [showModal, setShowModal] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
+    typeof window !== "undefined" ? window.innerWidth : 1200,
   );
 
   // only one sticky tab on the right
   const [showWhatsApp, setShowWhatsApp] = useState(false);
   const [hoverSecondary, setHoverSecondary] = useState(false);
+
+  // For Popping and flashing Book Now button
+  const [highlightBookNow, setHighlightBookNow] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -60,6 +63,32 @@ export const Header = () => {
     }
     setMenuOpen(false);
   };
+
+  useEffect(() => {
+    const triggerCTA = () => {
+      setHighlightBookNow(true);
+
+      // stop animation after 2 sec
+      setTimeout(() => setHighlightBookNow(false), 2000);
+    };
+
+    // 🔁 repeat every 4 sec
+    const interval = setInterval(triggerCTA, 4000);
+
+    // 📜 ALSO trigger on scroll instantly
+    const handleScrollTrigger = () => {
+      if (window.scrollY > 100) {
+        triggerCTA();
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollTrigger);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("scroll", handleScrollTrigger);
+    };
+  }, []);
 
   const handleNavClick = (e, item, index) => {
     if (item.path.startsWith("/#")) {
@@ -210,11 +239,11 @@ export const Header = () => {
       position: "fixed",
       bottom: 25,
       left: 25,
-      zIndex: 90
-    }
+      zIndex: 90,
+    },
   };
-  const green = '#2e3a21';
-  const greenHover = '#242b19';
+  const green = "#2e3a21";
+  const greenHover = "#242b19";
   const navigate = useNavigate();
   return (
     <>
@@ -332,7 +361,9 @@ export const Header = () => {
                   border: "none",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
-                  transform: hoverSecondary ? "translateY(-1px)" : "translateY(0)",
+                  transform: hoverSecondary
+                    ? "translateY(-1px)"
+                    : "translateY(0)",
                   boxShadow: hoverSecondary
                     ? "0 6px 16px rgba(0,0,0,0.25)"
                     : "0 3px 10px rgba(0,0,0,0.18)",
@@ -359,9 +390,41 @@ export const Header = () => {
                 Contact Us
               </button>
             )}
+            {windowWidth > 640 && (
+              <button
+                className="travel-heading"
+                type="button"
+                style={{
+                  ...cta,
+                  transform: highlightBookNow
+                    ? "scale(1.1)"
+                    : hoverCTA
+                      ? "translateY(-1px)"
+                      : "translateY(0)",
+
+                  boxShadow: highlightBookNow
+                    ? "0 0 0 0 rgba(255,255,255,0.7), 0 0 20px rgba(0,0,0,0.4)"
+                    : hoverCTA
+                      ? "0 6px 16px rgba(0,0,0,0.25)"
+                      : "0 3px 10px rgba(0,0,0,0.18)",
+
+                  animation: highlightBookNow ? "pulse 1s infinite" : "none",
+                }}
+                onClick={() =>
+                  window.open(
+                    "https://bookingengine.stayflexi.com/?hotel_id=35760",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                onMouseEnter={() => setHoverCTA(true)}
+                onMouseLeave={() => setHoverCTA(false)}
+              >
+                Book Now
+              </button>
+            )}
           </div>
         </div>
-
       </header>
 
       {/* RIGHT-SIDE VERTICAL MENU BELOW HEADER */}
@@ -436,9 +499,7 @@ export const Header = () => {
       >
         <button
           type="button"
-          onClick={() =>
-            window.open("https://wa.me/919015483181", "_blank")
-          }
+          onClick={() => window.open("https://wa.me/919015483181", "_blank")}
           style={{
             writingMode: "vertical-rl",
             textOrientation: "mixed",
