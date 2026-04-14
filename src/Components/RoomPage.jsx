@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import roomDeluxe from "../assets/Images/DeluxeRoom.jpeg";
 import roomPremium from "../assets/Images/PremiumRoom.jpeg";
 import roomCottage from "../assets/Images/CottageRoom.jpeg";
@@ -6,17 +6,19 @@ import roomFamily from "../assets/Images/imageFifteen.jpg";
 import roomDuplex from "../assets/Images/DuplexCottageRoomFirstFloor.jpeg";
 
 const RoomsPage = () => {
-  const [selectedRoom, setSelectedRoom] = useState('deluxe');
-  const [selectedMealPlan, setSelectedMealPlan] = useState('room-only');
-  const [selectedLunchOrDinner, setSelectedLunchOrDinner] = useState('lunch');
+  const [selectedRoom, setSelectedRoom] = useState("deluxe");
+  const [selectedMealPlan, setSelectedMealPlan] = useState("room-only");
+  const [selectedLunchOrDinner, setSelectedLunchOrDinner] = useState("lunch");
   const [expandedAmenities, setExpandedAmenities] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024,
+  );
 
   // ✅ RESPONSIVE WINDOW RESIZE
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const isMobile = windowWidth < 640;
@@ -24,82 +26,320 @@ const RoomsPage = () => {
 
   const rooms = [
     {
-      id: 'deluxe',
-      name: 'Deluxe Room',
+      id: "deluxe",
+      name: "Deluxe Room",
       image: roomDeluxe,
       // view: 'Mountain View',
       // beds: '1 King Bed',
-      basePrice: 'Starting ₹6,000',
+      basePrice: "Starting ₹3,500",
       amenities: [
-        'Daily Housekeeping', 'Free Wi-Fi', 'Bathroom', 'Air Conditioning',
-        'TV', 'Woollen Blanket', 'Room Service', 'Caretaker', 'Power backup', 'Closet'
+        "Daily Housekeeping",
+        "Free Wi-Fi",
+        "Bathroom",
+        "Air Conditioning",
+        "TV",
+        "Woollen Blanket",
+        "Room Service",
+        "Caretaker",
+        "Power backup",
+        "Closet",
+      ],
+      mealPlans: [
+        {
+          id: "room-only",
+          title: "EP Plan",
+          name: "Room Only",
+          mrp: 3500,
+          finalPrice: 2100,
+          discount: 40,
+          breakfast: false,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast",
+          title: "CP Plan",
+          name: "Room + Breakfast",
+          mrp: 4000,
+          finalPrice: 2400,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast-lunch-dinner",
+          title: "MAP Plan",
+          name: "Room + Breakfast + Lunch/Dinner",
+          mrp: 4500,
+          finalPrice: 2700,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
+        {
+          id: "full-board",
+          title: "AP Plan",
+          name: "Room + All Meals",
+          mrp: 5000,
+          finalPrice: 3000,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
       ],
     },
     {
-      id: 'premium',
-      name: 'Premium Room',
+      id: "premium",
+      name: "Premium Room",
       image: roomPremium,
       // view: 'Mountain View',
       // beds: '1 King Bed',
-      basePrice: 6999,
+      basePrice: "Starting ₹5,500",
       amenities: [
-        'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
-        'Woollen Blanket', 'Seating Area', 'Charging Points', 'Kettle'
+        "Daily Housekeeping",
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "TV",
+        "Woollen Blanket",
+        "Seating Area",
+        "Charging Points",
+        "Kettle",
+      ],
+      mealPlans: [
+        {
+          id: "room-only",
+          title: "EP Plan",
+          name: "Room Only",
+          mrp: 5500,
+          finalPrice: 3300,
+          discount: 40,
+          breakfast: false,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast",
+          title: "CP Plan",
+          name: "Room + Breakfast",
+          mrp: 6000,
+          finalPrice: 3600,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast-lunch-dinner",
+          title: "MAP Plan",
+          name: "Room + Breakfast + Lunch/Dinner",
+          mrp: 6500,
+          finalPrice: 3900,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
+        {
+          id: "full-board",
+          title: "AP Plan",
+          name: "Room + All Meals",
+          mrp: 7000,
+          finalPrice: 4200,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
       ],
     },
     {
-      id: 'cottage-deluxe',
-      name: 'Cottage ',
+      id: "cottage-deluxe",
+      name: "TreeHouse ",
       image: roomCottage,
       // view: 'River View',
       // beds: '1 King Bed',
-      basePrice: 7999,
+      basePrice: "Starting ₹6,000",
       amenities: [
-        'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
-        'Woollen Blanket', 'In-room Dining', 'Charging Points'
+        "Daily Housekeeping",
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "TV",
+        "Woollen Blanket",
+        "In-room Dining",
+        "Charging Points",
+      ],
+      mealPlans: [
+        {
+          id: "room-only",
+          title: "EP Plan",
+          name: "Room Only",
+          mrp: 6000,
+          finalPrice: 3600,
+          discount: 40,
+          breakfast: false,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast",
+          title: "CP Plan",
+          name: "Room + Breakfast",
+          mrp: 6500,
+          finalPrice: 3900,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast-lunch-dinner",
+          title: "MAP Plan",
+          name: "Room + Breakfast + Lunch/Dinner",
+          mrp: 7000,
+          finalPrice: 4200,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
+        {
+          id: "full-board",
+          title: "AP Plan",
+          name: "Room + All Meals",
+          mrp: 7500,
+          finalPrice: 4500,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
       ],
     },
     {
-      id: 'family-suite',
-      name: 'Family Suite Room',
+      id: "family-suite",
+      name: "Villa",
       // view: 'Mountain View',
       // beds: '2 Double Beds',
-      basePrice: 8999,
+      basePrice: "Starting ₹7,000",
       amenities: [
-        'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
-        'Woollen Blanket', 'Seating Area', 'Kettle'
+        "Daily Housekeeping",
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "TV",
+        "Woollen Blanket",
+        "Seating Area",
+        "Kettle",
+      ],
+      mealPlans: [
+        {
+          id: "room-only",
+          title: "EP Plan",
+          name: "Room Only",
+          mrp: 7000,
+          finalPrice: 4200,
+          discount: 40,
+          breakfast: false,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast",
+          title: "CP Plan",
+          name: "Room + Breakfast",
+          mrp: 7500,
+          finalPrice: 4500,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast-lunch-dinner",
+          title: "MAP Plan",
+          name: "Room + Breakfast + Lunch/Dinner",
+          mrp: 8000,
+          finalPrice: 4800,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
+        {
+          id: "full-board",
+          title: "AP Plan",
+          name: "Room + All Meals",
+          mrp: 8500,
+          finalPrice: 5100,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
       ],
     },
     {
-      id: 'cottage-duplex',
-      name: 'Cottage Duplex ',
+      id: "cottage-duplex",
+      name: "Family Cottage (Duplex) ",
       image: roomDuplex,
       // view: 'River View',
       // beds: '1 King Bed',
-      basePrice: 9999,
+      basePrice: "Starting ₹8,500",
       amenities: [
-        'Daily Housekeeping', 'Free Wi-Fi', 'Air Conditioning', 'TV',
-        'Woollen Blanket', 'Seating Area', 'Charging Points', 'Kettle'
+        "Daily Housekeeping",
+        "Free Wi-Fi",
+        "Air Conditioning",
+        "TV",
+        "Woollen Blanket",
+        "Seating Area",
+        "Charging Points",
+        "Kettle",
+      ],
+      mealPlans: [
+        {
+          id: "room-only",
+          title: "EP Plan",
+          name: "Room Only",
+          mrp: 8500,
+          finalPrice: 5100,
+          discount: 40,
+          breakfast: false,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast",
+          title: "CP Plan",
+          name: "Room + Breakfast",
+          mrp: 9000,
+          finalPrice: 5400,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: false,
+        },
+        {
+          id: "breakfast-lunch-dinner",
+          title: "MAP Plan",
+          name: "Room + Breakfast + Lunch/Dinner",
+          mrp: 10000,
+          finalPrice: 6000,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
+        {
+          id: "full-board",
+          title: "AP Plan",
+          name: "Room + All Meals",
+          mrp: 11000,
+          finalPrice: 6600,
+          discount: 40,
+          breakfast: true,
+          lunchDinner: true,
+        },
       ],
     },
   ];
 
-  const mealPlans = [
-    { id: 'room-only', name: 'Room Only', extraPrice: 0, breakfast: false, lunchDinner: false },
-    { id: 'breakfast', name: 'Room + Breakfast', extraPrice: 200, breakfast: true, lunchDinner: false },
-    { id: 'breakfast-lunch-dinner', name: 'Room + Breakfast + Lunch/Dinner', extraPrice: 500, breakfast: true, lunchDinner: true },
-    { id: 'full-board', name: 'Room + All Meals', extraPrice: 800, breakfast: true, lunchDinner: true },
-  ];
-
-  const selectedRoomData = rooms.find(room => room.id === selectedRoom) || rooms[0];
-  const selectedMealData = mealPlans.find(plan => plan.id === selectedMealPlan) || mealPlans[0];
-  const totalPrice = (selectedRoomData?.basePrice || 0) + (selectedMealData?.extraPrice || 0);
+  const selectedRoomData =
+    rooms.find((room) => room.id === selectedRoom) || rooms[0];
+  const selectedMealData =
+    selectedRoomData?.mealPlans?.find((plan) => plan.id === selectedMealPlan) ||
+    selectedRoomData?.mealPlans?.[0];
+  const totalPrice = selectedMealData?.finalPrice || 0;
 
   return (
     <div style={styles.pageContainer(isMobile)}>
       <div style={styles.header(isMobile)} className="travel-heading">
         <h1 style={styles.pageTitle(isMobile)}>Our Rooms</h1>
-        <p style={styles.pageSubtitle(isMobile)}>Choose your perfect stay with flexible meal options</p>
+        <p style={styles.pageSubtitle(isMobile)}>
+          Choose your perfect stay with flexible meal options
+        </p>
       </div>
 
       <div style={styles.mainGrid(isMobile, isTablet)}>
@@ -112,7 +352,9 @@ const RoomsPage = () => {
                 key={room.id}
                 style={{
                   ...styles.roomCard(isMobile),
-                  ...(selectedRoom === room.id ? styles.roomCardSelected(isMobile) : {}),
+                  ...(selectedRoom === room.id
+                    ? styles.roomCardSelected(isMobile)
+                    : {}),
                 }}
                 onClick={() => setSelectedRoom(room.id)}
               >
@@ -136,10 +378,12 @@ const RoomsPage = () => {
               <div style={styles.sparkleBadge}>✨</div>
               <div>
                 <h2 style={styles.previewTitle}>{selectedRoomData.name}</h2>
-                <p style={styles.previewView}>{selectedRoomData.view} • {selectedRoomData.beds}</p>
+                <p style={styles.previewView}>
+                  {selectedRoomData.view} • {selectedRoomData.beds}
+                </p>
               </div>
             </div>
-            
+
             <div style={styles.amenitiesPreview}>
               <h4 style={styles.previewAmenitiesTitle}>Key Amenities</h4>
               <div style={styles.amenitiesList}>
@@ -152,7 +396,7 @@ const RoomsPage = () => {
                 {selectedRoomData.amenities.length > 6 && (
                   <>
                     {!expandedAmenities && (
-                      <div 
+                      <div
                         style={styles.expandAmenities}
                         onClick={() => setExpandedAmenities(true)}
                       >
@@ -161,13 +405,18 @@ const RoomsPage = () => {
                     )}
                     {expandedAmenities && (
                       <>
-                        {selectedRoomData.amenities.slice(6).map((amenity, i) => (
-                          <div key={`extra-${i}`} style={styles.amenityPreview}>
-                            <span style={styles.amenityBullet}>•</span>
-                            <span>{amenity}</span>
-                          </div>
-                        ))}
-                        <div 
+                        {selectedRoomData.amenities
+                          .slice(6)
+                          .map((amenity, i) => (
+                            <div
+                              key={`extra-${i}`}
+                              style={styles.amenityPreview}
+                            >
+                              <span style={styles.amenityBullet}>•</span>
+                              <span>{amenity}</span>
+                            </div>
+                          ))}
+                        <div
                           style={styles.collapseAmenities}
                           onClick={() => setExpandedAmenities(false)}
                         >
@@ -184,26 +433,104 @@ const RoomsPage = () => {
           {/* Meal Plan Selector */}
           <div style={styles.mealSelector(isMobile)} className="travel-heading">
             <h3 style={styles.sectionTitle(isMobile)}>Choose Meal Plan</h3>
-            <p style={styles.nonRefundable}>All bookings are <strong>Non-Refundable</strong></p>
-            
+            <p style={styles.nonRefundable}>
+              All bookings are <strong>Non-Refundable</strong>
+            </p>
+
             <div style={styles.mealPlansGrid}>
-              {mealPlans.map((plan) => (
+              {selectedRoomData?.mealPlans?.map((plan) => (
                 <div
                   key={plan.id}
                   style={{
                     ...styles.mealCard(isMobile),
-                    ...(selectedMealPlan === plan.id ? styles.mealCardSelected(isMobile) : {}),
+                    ...(selectedMealPlan === plan.id
+                      ? styles.mealCardSelected(isMobile)
+                      : {}),
                   }}
                   onClick={() => setSelectedMealPlan(plan.id)}
                 >
+                  <div style={styles.discountBadge}>{plan.discount}% OFF</div>
+
                   <div style={styles.mealContent}>
-                    <h4>{plan.name}</h4>
-                    <div style={styles.mealPrice}>+₹{(plan.extraPrice || 0).toLocaleString()}</div>
+                    <div>
+                      <h4
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "1.05rem",
+                          color: "#2e3a21",
+                        }}
+                      >
+                        {plan.title}
+                      </h4>
+
+                      <p
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "#64748b",
+                          margin: "2px 0 0 0",
+                        }}
+                      >
+                        {plan.name}
+                      </p>
+                    </div>
+                    <div style={styles.mealPrice}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "2px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                          }}
+                        >
+                          <span
+                            style={{
+                              position: "relative",
+                              color: "#94a3b8",
+                              fontSize: "0.9rem",
+                            }}
+                          >
+                            ₹{plan.mrp.toLocaleString()}
+                            <span
+                              style={{
+                                position: "absolute",
+                                left: 0,
+                                top: "50%",
+                                width: "100%",
+                                height: "1px",
+                                background: "#ef4444",
+                                transform: "rotate(-15deg)",
+                              }}
+                            />
+                          </span>
+
+                          <span
+                            style={{
+                              fontSize: "1.3rem",
+                              fontWeight: "bold",
+                              color: "#059669",
+                            }}
+                          >
+                            ₹{plan.finalPrice.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                     <div style={styles.mealStatus}>
-                      {plan.breakfast && <span style={styles.included}>✓ Breakfast</span>}
+                      {plan.breakfast && (
+                        <span style={styles.included}>✓ Breakfast</span>
+                      )}
                       {plan.lunchDinner && (
                         <span style={styles.included}>
-                          ✓ {selectedLunchOrDinner === 'lunch' ? 'Lunch' : 'Dinner'}
+                          ✓{" "}
+                          {selectedLunchOrDinner === "lunch"
+                            ? "Lunch"
+                            : "Dinner"}
                         </span>
                       )}
                     </div>
@@ -212,23 +539,27 @@ const RoomsPage = () => {
               ))}
             </div>
 
-            {selectedMealPlan === 'breakfast-lunch-dinner' && (
+            {selectedMealPlan === "breakfast-lunch-dinner" && (
               <div style={styles.lunchDinnerToggle}>
                 <button
                   style={{
                     ...styles.toggleBtn,
-                    ...(selectedLunchOrDinner === 'lunch' ? styles.toggleBtnActive : {}),
+                    ...(selectedLunchOrDinner === "lunch"
+                      ? styles.toggleBtnActive
+                      : {}),
                   }}
-                  onClick={() => setSelectedLunchOrDinner('lunch')}
+                  onClick={() => setSelectedLunchOrDinner("lunch")}
                 >
                   Lunch
                 </button>
                 <button
                   style={{
                     ...styles.toggleBtn,
-                    ...(selectedLunchOrDinner === 'dinner' ? styles.toggleBtnActive : {}),
+                    ...(selectedLunchOrDinner === "dinner"
+                      ? styles.toggleBtnActive
+                      : {}),
                   }}
-                  onClick={() => setSelectedLunchOrDinner('dinner')}
+                  onClick={() => setSelectedLunchOrDinner("dinner")}
                 >
                   Dinner
                 </button>
@@ -236,16 +567,24 @@ const RoomsPage = () => {
             )}
 
             {/* Total & Book */}
-            <div style={styles.totalSection(isMobile)} className="travel-heading">
-              <button 
+            <div
+              style={styles.totalSection(isMobile)}
+              className="travel-heading"
+            >
+              {/* <button
                 style={styles.bookBtn(isMobile)}
                 onClick={() => {
-                  console.log(`Booking: ${selectedRoomData.name} + ${selectedMealData.name} = ₹${totalPrice}`);
+                  console.log(
+                    `Booking: ${selectedRoomData.name} + ${selectedMealData.name} = ₹${totalPrice}`,
+                  );
                 }}
               >
                 Book Now - Non Refundable
-              </button>
-              <p style={styles.mealNote}>Meals: North Indian & South Indian • Veg/Non-Veg • Freshly prepared</p>
+              </button> */}
+              <p style={styles.mealNote}>
+                Meals: North Indian & South Indian • Veg/Non-Veg • Freshly
+                prepared
+              </p>
             </div>
           </div>
         </div>
@@ -256,283 +595,307 @@ const RoomsPage = () => {
 
 const styles = {
   pageContainer: (isMobile) => ({
-    minHeight: '100vh',
-    background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
-    padding: isMobile ? '6rem 1rem' : '8rem 2rem',
-    fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)",
+    padding: isMobile ? "6rem 1rem" : "8rem 2rem",
+    fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
   }),
   header: (isMobile) => ({
-    textAlign: 'center',
-    marginBottom: isMobile ? '2.5rem' : '4rem',
+    textAlign: "center",
+    marginBottom: isMobile ? "2.5rem" : "4rem",
   }),
   pageTitle: (isMobile) => ({
-    fontSize: isMobile ? '2.5rem' : '3.5rem',
-    fontWeight: 'bold',
-    background: 'linear-gradient(135deg, #2e3a21, #4ade80)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    fontSize: isMobile ? "2.5rem" : "3.5rem",
+    fontWeight: "bold",
+    background: "linear-gradient(135deg, #2e3a21, #4ade80)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
     margin: 0,
-    marginBottom: '1rem',
+    marginBottom: "1rem",
     lineHeight: isMobile ? 1.2 : 1.1,
   }),
   pageSubtitle: (isMobile) => ({
-    fontSize: isMobile ? '1.25rem' : '1.5rem',
-    color: '#64748b',
+    fontSize: isMobile ? "1.25rem" : "1.5rem",
+    color: "#64748b",
     margin: 0,
   }),
   mainGrid: (isMobile, isTablet) => ({
-    maxWidth: '1400px',
-    margin: '0 auto',
-    display: isMobile ? 'block' : 'grid',
-    gridTemplateColumns: isTablet ? '1fr' : '1fr 500px',
-    gap: isMobile ? '2rem' : '3rem',
+    maxWidth: "1400px",
+    margin: "0 auto",
+    display: isMobile ? "block" : "grid",
+    gridTemplateColumns: isTablet ? "1fr" : "1fr 500px",
+    gap: isMobile ? "2rem" : "3rem",
   }),
   roomsSection: (isMobile) => ({
-    background: 'white',
-    borderRadius: isMobile ? '1.5rem' : '2rem',
-    padding: isMobile ? '2rem 1.5rem' : '2.5rem',
-    boxShadow: '0 25px 60px rgba(0,0,0,0.1)',
+    background: "white",
+    borderRadius: isMobile ? "1.5rem" : "2rem",
+    padding: isMobile ? "2rem 1.5rem" : "2.5rem",
+    boxShadow: "0 25px 60px rgba(0,0,0,0.1)",
   }),
   sectionTitle: (isMobile) => ({
-    fontSize: isMobile ? '1.75rem' : '2rem',
-    fontWeight: 'bold',
-    color: '#2e3a21',
-    marginBottom: isMobile ? '1.5rem' : '2rem',
-    textAlign: isMobile ? 'center' : 'left',
+    fontSize: isMobile ? "1.75rem" : "2rem",
+    fontWeight: "bold",
+    color: "#2e3a21",
+    marginBottom: isMobile ? "1.5rem" : "2rem",
+    textAlign: isMobile ? "center" : "left",
   }),
   roomsGrid: (isMobile) => ({
-    display: 'grid',
-    gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: isMobile ? '1rem' : '1.5rem',
+    display: "grid",
+    gridTemplateColumns: isMobile
+      ? "1fr"
+      : "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: isMobile ? "1rem" : "1.5rem",
   }),
   roomCard: (isMobile) => ({
-    padding: isMobile ? '1.5rem 1.25rem' : '2rem',
-    border: '2px solid #e2e8f0',
-    borderRadius: isMobile ? '1.25rem' : '1.5rem',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    background: 'white',
+    padding: isMobile ? "1.5rem 1.25rem" : "2rem",
+    border: "2px solid #e2e8f0",
+    borderRadius: isMobile ? "1.25rem" : "1.5rem",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    background: "white",
   }),
   roomCardSelected: (isMobile) => ({
-    borderColor: '#2e3a21',
-    background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-    boxShadow: '0 20px 40px rgba(100,115,40,0.65)',
-    transform: 'translateY(-5px)',
+    borderColor: "#2e3a21",
+    background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+    boxShadow: "0 20px 40px rgba(100,115,40,0.65)",
+    transform: "translateY(-5px)",
   }),
   roomHeader: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '0.75rem',
-    marginBottom: '1rem',
+    display: "flex",
+    alignItems: "flex-start",
+    gap: "0.75rem",
+    marginBottom: "1rem",
   },
   viewBadge: {
-    background: '#dcfce7',
-    color: '#2e3a21',
-    padding: '0.4rem 0.6rem',
-    borderRadius: '0.75rem',
-    fontSize: '0.8rem',
+    background: "#dcfce7",
+    color: "#2e3a21",
+    padding: "0.4rem 0.6rem",
+    borderRadius: "0.75rem",
+    fontSize: "0.8rem",
     fontWeight: 600,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
   },
   roomName: {
-    fontSize: '1.25rem',
-    fontWeight: 'bold',
-    color: '#2e3a21',
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+    color: "#2e3a21",
     margin: 0,
     lineHeight: 1.2,
   },
   roomBeds: {
-    color: '#475569',
-    fontSize: '0.9rem',
-    margin: '0.25rem 0 0 0',
+    color: "#475569",
+    fontSize: "0.9rem",
+    margin: "0.25rem 0 0 0",
   },
   bookingSection: (isMobile) => ({
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'column',
-    gap: isMobile ? '1.5rem' : '2rem',
+    display: "flex",
+    flexDirection: isMobile ? "column" : "column",
+    gap: isMobile ? "1.5rem" : "2rem",
   }),
   previewCard: (isMobile) => ({
-    background: 'white',
-    borderRadius: isMobile ? '1.25rem' : '1.5rem',
-    padding: isMobile ? '1.5rem' : '2rem',
-    boxShadow: '0 20px 40px rgba(100,115,40,0.55)',
+    background: "white",
+    borderRadius: isMobile ? "1.25rem" : "1.5rem",
+    padding: isMobile ? "1.5rem" : "2rem",
+    boxShadow: "0 20px 40px rgba(100,115,40,0.55)",
   }),
   previewHeader: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-    marginBottom: '1.25rem',
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    marginBottom: "1.25rem",
   },
   sparkleBadge: {
-    fontSize: '1.4rem',
-    background: '#dcfce7',
-    color: '#2e3a21',
-    width: '36px',
-    height: '36px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontSize: "1.4rem",
+    background: "#dcfce7",
+    color: "#2e3a21",
+    width: "36px",
+    height: "36px",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   previewTitle: {
-    fontSize: '1.4rem',
-    fontWeight: 'bold',
-    color: '#2e3a21',
+    fontSize: "1.4rem",
+    fontWeight: "bold",
+    color: "#2e3a21",
     margin: 0,
   },
   previewView: {
-    color: '#64748b',
-    fontSize: '0.95rem',
-    margin: '0.25rem 0 0 0',
+    color: "#64748b",
+    fontSize: "0.95rem",
+    margin: "0.25rem 0 0 0",
   },
   amenitiesPreview: {
-    marginTop: '1rem',
+    marginTop: "1rem",
   },
   previewAmenitiesTitle: {
-    color: '#2e3a21',
-    marginBottom: '1rem',
-    fontWeight: 'bold',
-    fontSize: '1rem',
+    color: "#2e3a21",
+    marginBottom: "1rem",
+    fontWeight: "bold",
+    fontSize: "1rem",
   },
   amenitiesList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.4rem',
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.4rem",
   },
   amenityPreview: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.4rem',
-    padding: '0.4rem',
-    background: '#f8fafc',
-    borderRadius: '0.6rem',
-    fontSize: '0.9rem',
+    display: "flex",
+    alignItems: "center",
+    gap: "0.4rem",
+    padding: "0.4rem",
+    background: "#f8fafc",
+    borderRadius: "0.6rem",
+    fontSize: "0.9rem",
   },
   amenityBullet: {
-    color: '#2e3a21',
-    fontWeight: 'bold',
-    minWidth: '1rem',
+    color: "#2e3a21",
+    fontWeight: "bold",
+    minWidth: "1rem",
   },
   expandAmenities: {
-    color: 'rgba(100,115,40,0.8)',
+    color: "rgba(100,115,40,0.8)",
     fontWeight: 600,
-    fontSize: '0.9rem',
-    cursor: 'pointer',
-    padding: '0.6rem',
-    background: 'rgba(100,115,40,0.08)',
-    borderRadius: '0.6rem',
-    border: '2px dashed rgba(100,115,40,0.3)',
-    textAlign: 'center',
-    transition: 'all 0.3s ease',
-    marginTop: '0.5rem',
+    fontSize: "0.9rem",
+    cursor: "pointer",
+    padding: "0.6rem",
+    background: "rgba(100,115,40,0.08)",
+    borderRadius: "0.6rem",
+    border: "2px dashed rgba(100,115,40,0.3)",
+    textAlign: "center",
+    transition: "all 0.3s ease",
+    marginTop: "0.5rem",
   },
   collapseAmenities: {
-    color: 'rgba(100,115,40,0.8)',
+    color: "rgba(100,115,40,0.8)",
     fontWeight: 600,
-    fontSize: '0.9rem',
-    cursor: 'pointer',
-    padding: '0.6rem',
-    background: 'rgba(100,115,40,0.08)',
-    borderRadius: '0.6rem',
-    textAlign: 'center',
-    transition: 'all 0.3s ease',
-    marginTop: '0.5rem',
+    fontSize: "0.9rem",
+    cursor: "pointer",
+    padding: "0.6rem",
+    background: "rgba(100,115,40,0.08)",
+    borderRadius: "0.6rem",
+    textAlign: "center",
+    transition: "all 0.3s ease",
+    marginTop: "0.5rem",
   },
   mealSelector: (isMobile) => ({
-    background: 'white',
-    borderRadius: isMobile ? '1.25rem' : '1.5rem',
-    padding: isMobile ? '2rem 1.5rem' : '2.5rem',
-    boxShadow: '0 20px 40px rgba(100,115,40,0.55)',
+    background: "white",
+    borderRadius: isMobile ? "1.25rem" : "1.5rem",
+    padding: isMobile ? "2rem 1.5rem" : "2.5rem",
+    boxShadow: "0 20px 40px rgba(100,115,40,0.55)",
   }),
   nonRefundable: {
-    color: '#dc2626',
-    fontSize: '0.9rem',
-    marginBottom: '1.25rem',
-    textAlign: 'center',
+    color: "#dc2626",
+    fontSize: "0.9rem",
+    marginBottom: "1.25rem",
+    textAlign: "center",
   },
   mealPlansGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr',
-    gap: '1rem',
-    marginBottom: '1.25rem',
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    gap: "1rem",
+    marginBottom: "1.25rem",
   },
   mealCard: (isMobile) => ({
-    padding: isMobile ? '1.25rem 1rem' : '1.5rem',
-    border: '2px solid #e2e8f0',
-    borderRadius: '0.875rem',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
+    padding: isMobile ? "1.25rem 1rem" : "1.5rem",
+    border: "2px solid #e2e8f0",
+    borderRadius: "0.875rem",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    position: "relative",
   }),
   mealCardSelected: (isMobile) => ({
-    borderColor: '#2e3a21',
-    background: '#f0fdf4',
-    boxShadow: '0 10px 25px rgba(100,115,40,0.65)',
+    borderColor: "#2e3a21",
+    background: "#f0fdf4",
+    boxShadow: "0 10px 25px rgba(100,115,40,0.65)",
   }),
   mealContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.4rem',
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.4rem",
   },
   mealPrice: {
-    fontSize: '1.4rem',
-    fontWeight: 'bold',
-    color: '#059669',
+    fontSize: "1.4rem",
+    fontWeight: "bold",
+    color: "#059669",
   },
   mealStatus: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.2rem',
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.2rem",
   },
   included: {
-    color: '#059669',
-    fontWeight: '500',
-    fontSize: '0.9rem',
+    color: "#059669",
+    fontWeight: "500",
+    fontSize: "0.9rem",
   },
   lunchDinnerToggle: {
-    display: 'flex',
-    gap: '0.5rem',
-    marginBottom: '1.5rem',
+    display: "flex",
+    gap: "0.5rem",
+    marginBottom: "1.5rem",
   },
   toggleBtn: {
     flex: 1,
-    padding: '0.65rem',
-    border: '2px solid #e2e8f0',
-    background: 'white',
-    borderRadius: '0.65rem',
-    cursor: 'pointer',
+    padding: "0.65rem",
+    border: "2px solid #e2e8f0",
+    background: "white",
+    borderRadius: "0.65rem",
+    cursor: "pointer",
     fontWeight: 500,
-    transition: 'all 0.3s ease',
-    fontSize: '0.95rem',
+    transition: "all 0.3s ease",
+    fontSize: "0.95rem",
   },
   toggleBtnActive: {
-    borderColor: '#2e3a21',
-    background: '#2e3a21',
-    color: 'white',
+    borderColor: "#2e3a21",
+    background: "#2e3a21",
+    color: "white",
   },
   totalSection: (isMobile) => ({
-    borderTop: '2px solid #f1f5f9',
-    paddingTop: isMobile ? '1.5rem' : '2rem',
-    textAlign: isMobile ? 'center' : 'left',
+    borderTop: "2px solid #f1f5f9",
+    paddingTop: isMobile ? "1.5rem" : "2rem",
+    textAlign: isMobile ? "center" : "left",
   }),
   bookBtn: (isMobile) => ({
-    width: '100%',
-    padding: isMobile ? '1rem 1.25rem' : '1.25rem',
-    background: 'linear-gradient(135deg, #2e3a21 0%, #1e2715 100%)',
-    color: 'white',
-    border: 'none',
-    borderRadius: isMobile ? '0.875rem' : '1rem',
-    fontSize: isMobile ? '1.1rem' : '1.2rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 0 30px rgba(100,115,40,0.55)',
-    marginBottom: '1rem',
+    width: "100%",
+    padding: isMobile ? "1rem 1.25rem" : "1.25rem",
+    background: "linear-gradient(135deg, #2e3a21 0%, #1e2715 100%)",
+    color: "white",
+    border: "none",
+    borderRadius: isMobile ? "0.875rem" : "1rem",
+    fontSize: isMobile ? "1.1rem" : "1.2rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    boxShadow: "0 0 30px rgba(100,115,40,0.55)",
+    marginBottom: "1rem",
   }),
   mealNote: {
-    textAlign: 'center',
-    color: '#64748b',
-    fontSize: '0.85rem',
-    marginTop: '0.5rem',
+    textAlign: "center",
+    color: "#64748b",
+    fontSize: "0.85rem",
+    marginTop: "0.5rem",
+  },
+  discountBadge: {
+    position: "absolute",
+    top: "12px",
+    right: "12px",
+
+    background: "linear-gradient(135deg, #dc2626, #ef4444)",
+    color: "#fff",
+
+    fontSize: "0.9rem",
+    fontWeight: "800",
+    letterSpacing: "0.5px",
+
+    padding: "6px 12px",
+    borderRadius: "999px",
+
+    boxShadow: "0 6px 18px rgba(220,38,38,0.35)",
+
+    border: "2px solid rgba(255,255,255,0.8)",
+
+    zIndex: 2,
   },
 };
 

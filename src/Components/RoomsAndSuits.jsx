@@ -11,7 +11,7 @@ const ROOMS = [
   {
     id: "deluxe",
     title: "Deluxe Room ",
-    subtitle: "Starting ₹6,000 ",
+    subtitle: "Starting ₹3,500 ",
     image: roomDeluxe,
     // size: "~260 sq.ft",
     // bed: "1 King Bed",
@@ -20,7 +20,7 @@ const ROOMS = [
   {
     id: "premium",
     title: "Premium Room ",
-    subtitle: "Starting ₹7,500",
+    subtitle: "Starting ₹5,500",
     image: roomPremium,
     // size: "~280 sq.ft",
     // bed: "1 King Bed",
@@ -28,8 +28,8 @@ const ROOMS = [
   },
   {
     id: "cottage-deluxe",
-    title: "Cottage Deluxe ",
-    subtitle: "Starting ₹10,000",
+    title: "Tree House ",
+    subtitle: "Starting ₹5,999",
     image: roomCottage,
     // size: "~300 sq.ft",
     // bed: "1 King Bed",
@@ -37,8 +37,8 @@ const ROOMS = [
   },
   {
     id: "family-suite",
-    title: "Family Suite Room ",
-    subtitle: "Starting ₹8,999 ",
+    title: "Villa ",
+    subtitle: "Starting ₹6,999 ",
     image: roomFamilySuite,
     // size: "~420 sq.ft",
     // bed: "2 Double Beds",
@@ -46,8 +46,8 @@ const ROOMS = [
   },
   {
     id: "cottage-duplex",
-    title: "Duplex Cottage ",
-    subtitle: "Starting ₹12,000",
+    title: "Family Cottage (Duplex) ",
+    subtitle: "Starting ₹8,500",
     image: roomCottageDuplex,
     // size: "~450 sq.ft",
     // bed: "1 King Bed",
